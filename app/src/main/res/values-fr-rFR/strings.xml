@@ -8,5 +8,6 @@
     <string name="fg_login_email_ph">Votre email</string>
     <string name="fg_login_password_ph">Votre password</string>
     <string name="fg_login_btn_login">Se connecter</string>
+    <string name="tv_splash">Chargement en cours...</string>
 
 </resources>
