@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 
 
-class EventChoiceFragment : Fragment() {
+class CallUpSummaryFragment : Fragment() {
 
 
     override fun onCreateView(
@@ -15,8 +15,14 @@ class EventChoiceFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_event_choice, container, false)
+        return inflater.inflate(R.layout.fragment_call_up_summary, container, false)
     }
 
 
 }
+
+// Recapitulatif de la creation du match
+// Date, lieu, equipe adverse, liste des joueurs convoqués
+// Bouton Valider.
+
+// Requete INSERT envoyée en BDD
