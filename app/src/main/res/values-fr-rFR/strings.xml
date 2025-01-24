@@ -10,4 +10,8 @@
     <string name="fg_login_btn_login">Se connecter</string>
     <string name="tv_splash">Chargement en cours...</string>
 
+    <!-- Create Event Fragment   -->
+    <string name="tv_fg_event_create_title">Créer événement</string>
+
+
 </resources>
