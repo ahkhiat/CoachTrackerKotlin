@@ -1,4 +1,4 @@
-package com.devid_academy.coachtrackerkotlin
+package com.devid_academy.coachtrackerkotlin.data
 
 data class EventType(val id: Int, val name: String)
 

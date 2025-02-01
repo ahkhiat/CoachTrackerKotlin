@@ -1,4 +1,4 @@
-package com.devid_academy.coachtrackerkotlin
+package com.devid_academy.coachtrackerkotlin.data
 
 data class User(val email: String, val password: String, val role: String) {
 

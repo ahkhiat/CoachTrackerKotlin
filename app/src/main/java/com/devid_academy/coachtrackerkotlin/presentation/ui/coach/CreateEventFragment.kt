@@ -1,4 +1,4 @@
-package com.devid_academy.coachtrackerkotlin
+package com.devid_academy.coachtrackerkotlin.presentation.ui.coach
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,7 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.Toast
+import com.devid_academy.coachtrackerkotlin.R
+import com.devid_academy.coachtrackerkotlin.data.getFakeCategories
 
 
 class CreateEventFragment : Fragment() {

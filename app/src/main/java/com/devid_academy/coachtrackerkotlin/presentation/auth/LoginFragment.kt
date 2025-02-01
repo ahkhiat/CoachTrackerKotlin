@@ -1,4 +1,4 @@
-package com.devid_academy.coachtrackerkotlin
+package com.devid_academy.coachtrackerkotlin.presentation.auth
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,8 +8,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
-import java.util.logging.Handler
+import com.devid_academy.coachtrackerkotlin.R
+import com.devid_academy.coachtrackerkotlin.data.User
+import com.devid_academy.coachtrackerkotlin.presentation.ui.shared.CalendarFragment
 
 
 class LoginFragment : Fragment() {
@@ -50,8 +51,7 @@ class LoginFragment : Fragment() {
 
     private fun navigateToRoleSpecificScreen(role: String) {
         val targetFragment = when (role) {
-            "ROLE_COACH" -> CoachFragmentHome()
-            "ROLE_PLAYER" -> PlayerFragmentHome()
+            "ROLE_COACH" -> CalendarFragment()
             else -> null
         }
 
