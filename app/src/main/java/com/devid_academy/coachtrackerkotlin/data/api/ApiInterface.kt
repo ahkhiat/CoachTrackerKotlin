@@ -12,8 +12,8 @@ import retrofit2.http.Query
 
 interface ApiInterface {
     @GET(ApiRoutes.GET_ALL_EVENTS)
-//    fun getAllEvents(@Query("team") teamId: Long): Call<List<EventDTO>>
-    fun getAllEvents(): Call<List<EventDTO>>
+    fun getAllEvents(@Query("team.name") teamName: String): Call<List<EventDTO>>
+//    fun getAllEvents(): Call<List<EventDTO>>
 
 //    @FormUrlEncoded // pour gérer les accents
 //    @POST(ApiRoutes.ADD_COUNTRY)

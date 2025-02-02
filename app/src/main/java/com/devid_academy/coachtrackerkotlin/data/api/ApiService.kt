@@ -75,10 +75,10 @@ object ApiService {
 
 
 
-const val MY_TEAM_ID = 3L
+const val MY_TEAM_NAME = "U11F1"
 
 fun getEvents(onResult: (List<EventDTO>) -> Unit) {
-    val call: Call<List<EventDTO>>? = ApiService.getApi().getAllEvents()
+    val call: Call<List<EventDTO>>? = ApiService.getApi().getAllEvents(MY_TEAM_NAME)
     call?.enqueue(object : Callback<List<EventDTO>> {
         override fun onResponse(call: Call<List<EventDTO>>, response: Response<List<EventDTO>>) {
             response.body()?.let {
