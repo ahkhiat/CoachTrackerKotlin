@@ -61,7 +61,7 @@ object ApiService {
 
         val moshi = Moshi.Builder().apply {
             add(KotlinJsonAdapterFactory())
-            add(DateJsonAdapter())
+//            add(DateJsonAdapter())
         }.build()
 
         return Retrofit.Builder()
@@ -72,6 +72,7 @@ object ApiService {
     }
     fun getApi() = getClient().create(ApiInterface::class.java)
 }
+
 
 
 

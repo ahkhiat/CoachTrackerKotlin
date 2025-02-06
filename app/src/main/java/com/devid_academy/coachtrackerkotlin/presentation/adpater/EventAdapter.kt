@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.devid_academy.coachtrackerkotlin.R
 import com.devid_academy.coachtrackerkotlin.data.dto.EventDTO
 import com.devid_academy.coachtrackerkotlin.presentation.ui.shared.CalendarFragment
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 
@@ -30,24 +32,20 @@ class EventAdapter(): RecyclerView.Adapter<EventAdapter.EventHolder>() {
 
     override fun onBindViewHolder(holder: EventAdapter.EventHolder, position: Int) {
         val event = eventsList.get(position)
-
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()) // Format reçu
-        val dayFormat = SimpleDateFormat("EEEE", Locale.getDefault()) // Jour ex: Monday
-        val dateFormat = SimpleDateFormat("dd", Locale.getDefault()) // Jour numérique
-        val monthFormat = SimpleDateFormat("MMM", Locale.getDefault()) // Mois court ex: Jan
-        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault()) // Heure 24h
-
-        val eventDate = inputFormat.parse(event.date) // Conversion de la chaîne
-
         with(holder) {
             tvTitle.text = event.eventType.name
             tvLocation.text = event.stadium.name
-            eventDate?.let {
-                tvDay.text = dayFormat.format(it)
-                tvDate.text = dateFormat.format(it)
-                tvMonth.text = monthFormat.format(it)
-                tvTime.text = timeFormat.format(it)
-            }
+
+            val dateString = event.date
+
+            val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.getDefault())
+                        .parse(dateString)
+
+            tvDay.text = SimpleDateFormat("EEEE", Locale.getDefault()).format(date)
+            tvDate.text = SimpleDateFormat("dd", Locale.getDefault()).format(date)
+            tvMonth.text = SimpleDateFormat("MMM", Locale.getDefault()).format(date)
+            tvTime.text = SimpleDateFormat("HH:mm", Locale.getDefault()).format(date)
+
         }
     }
 

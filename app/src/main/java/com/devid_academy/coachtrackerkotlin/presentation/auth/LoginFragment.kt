@@ -8,59 +8,81 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import com.devid_academy.coachtrackerkotlin.R
 import com.devid_academy.coachtrackerkotlin.data.User
+import com.devid_academy.coachtrackerkotlin.data.api.getLogin
+import com.devid_academy.coachtrackerkotlin.data.dto.auth.AuthDTO
 import com.devid_academy.coachtrackerkotlin.presentation.ui.shared.CalendarFragment
 
 
 class LoginFragment : Fragment() {
 
-    private lateinit var emailInput: EditText
-    private lateinit var passwordInput: EditText
-    private lateinit var loginButton: Button
     private lateinit var tvLogin: TextView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_login, container, false)
 
-        emailInput = view.findViewById(R.id.fg_login_email)
-        passwordInput = view.findViewById(R.id.fg_login_password)
-        loginButton = view.findViewById(R.id.fg_login_btn_login)
         tvLogin = view.findViewById(R.id.tv_login)
 
-        loginButton.setOnClickListener {
-            val email = emailInput.text.toString()
-            val password = passwordInput.text.toString()
+        view.findViewById<Button>(R.id.fg_login_btn_login).setOnClickListener {
+            val email = view.findViewById<EditText>(R.id.fg_login_email)
+                .text.toString().trim()
+            val password = view.findViewById<EditText>(R.id.fg_login_password)
+                .text.toString().trim()
 
-            val user = validateLogin(email, password, User.users)
-
-            if(user != null) {
-                tvLogin.text = "Bienvenue"
-                navigateToRoleSpecificScreen(user.role)
+            if(email.isNotEmpty() && password.isNotEmpty()){
+                verifyLogin(email, password)
             } else {
-                tvLogin.text = "Nom d\'utilisateur ou mot de passe incorrect"
+                Toast.makeText(context, "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show()
             }
+//            view.findViewById<TextView>(R.id.login_tv_signup).setOnClickListener{
+//                parentFragmentManager.beginTransaction()
+//                    .replace(R.id.fg_container, RegisterFragment())
+//                    .addToBackStack(null)
+//                    .commit()
+//            }
+
 
         }
 
         return view
     }
 
-    private fun navigateToRoleSpecificScreen(role: String) {
-        val targetFragment = when (role) {
-            "ROLE_COACH" -> CalendarFragment()
-            else -> null
-        }
-
-        if (targetFragment != null) {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fg_container, targetFragment)
-                .commit()
+    fun verifyLogin(login: String, password: String) {
+        val user = AuthDTO(login, password)
+        getLogin(user) { isSuccess, resultId, resultTokenOrStatus ->
+            if (isSuccess) {
+                message = "Connexion réussie"
+                PreferencesManager(requireContext()).setToken(resultTokenOrStatus!!)
+                PreferencesManager(requireContext()).setUserId(resultId)
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fg_container, RecyclerViewArticlesFragment())
+                    .commit()
+            } else {
+                message = when (resultTokenOrStatus) {
+                    "5" -> "Problème de sécurité, token inchangé"
+                    "0"-> "Utilisateur inconnu"
+                    else -> "Erreur paramètre"
+                }
+            }
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         }
     }
+//    private fun navigateToRoleSpecificScreen(role: String) {
+//        val targetFragment = when (role) {
+//            "ROLE_COACH" -> CalendarFragment()
+//            else -> null
+//        }
+//
+//        if (targetFragment != null) {
+//            parentFragmentManager.beginTransaction()
+//                .replace(R.id.fg_container, targetFragment)
+//                .commit()
+//        }
+//    }
 
 
 
