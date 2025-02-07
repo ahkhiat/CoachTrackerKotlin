@@ -12,7 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.devid_academy.coachtrackerkotlin.R
 import com.devid_academy.coachtrackerkotlin.data.api.getEvents
+import com.devid_academy.coachtrackerkotlin.data.manager.AuthManager
+import com.devid_academy.coachtrackerkotlin.data.manager.PreferencesManager
 import com.devid_academy.coachtrackerkotlin.presentation.adpater.EventAdapter
+import com.devid_academy.coachtrackerkotlin.presentation.auth.LoginFragment
 import com.devid_academy.coachtrackerkotlin.presentation.ui.coach.CreateEventFragment
 
 class CalendarFragment : Fragment() {
@@ -42,6 +45,14 @@ class CalendarFragment : Fragment() {
         recyclerView = view.findViewById<RecyclerView>(R.id.rv_calendar).apply {
             layoutManager = LinearLayoutManager(context)
             adapter = eventAdapter
+        }
+
+        view.findViewById<Button>(R.id.rv_btn_logout).setOnClickListener {
+            AuthManager(PreferencesManager(requireContext()))
+                .logout()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fg_container, LoginFragment())
+                .commit()
         }
 
         refresh()

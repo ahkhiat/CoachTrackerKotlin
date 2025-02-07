@@ -64,7 +64,7 @@ class LoginFragment : Fragment() {
                     .replace(R.id.fg_container, CalendarFragment())
                     .commit()
             } else {
-                message = resultTokenOrStatus.toString()
+                message = "Données de connexion invalides"
                 }
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         }

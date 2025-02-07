@@ -13,12 +13,15 @@ fun getLogin(user: AuthDTO, onResult: (Boolean, String?) -> Unit) {
     val call: Call<StatusAuthDTO>? = ApiService.getApi().loginUser(user)
     call?.enqueue(object : Callback<StatusAuthDTO> {
         override fun onResponse(call: Call<StatusAuthDTO>, response: Response<StatusAuthDTO>) {
-            Log.d(ContentValues.TAG, "Réponse du serveur : ${response.message()}")
+            Log.d(ContentValues.TAG, "Réponse du serveur : ${response.body()}")
             response.body()?.let {
-                if (it.token!!.isNotEmpty()) {
+                if (!it.token.isNullOrEmpty()) {
                     onResult(true, it.token)
                     } else {
-                        onResult(false, it.message)
+                    Log.d("tag", "Body ELSE: ${response.body()}")
+                    onResult(false, it.message)
+
+                    Log.i("tag", it.message!!)
                 }
             }
         }

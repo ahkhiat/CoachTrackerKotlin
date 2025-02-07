@@ -30,34 +30,34 @@ object ApiService {
 
         // Desactiver la validation SSL, ATTENTION seulement en mode DEV
         // DEBUT
-//        val trustAllCertificates = object : X509TrustManager {
-//            override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
-//            override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) {}
-//            override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {}
-//        }
-//
-//        val sslContext = SSLContext.getInstance("TLS")
-//        sslContext.init(null, arrayOf(TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()).let {
-//            it.init(null as KeyStore?)
-//            trustAllCertificates
-//        }), SecureRandom())
+        val trustAllCertificates = object : X509TrustManager {
+            override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+            override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) {}
+            override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {}
+        }
+
+        val sslContext = SSLContext.getInstance("TLS")
+        sslContext.init(null, arrayOf(TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()).let {
+            it.init(null as KeyStore?)
+            trustAllCertificates
+        }), SecureRandom())
         // FIN
 
-        val client = OkHttpClient.Builder()
-            .addInterceptor(interceptor).build()
-//            val client = OkHttpClient.Builder()
-//                .addInterceptor(interceptor)
-//                .addInterceptor { chain ->
-//                    val request = chain.request().newBuilder()
-//                        .addHeader("Accept", "application/json")
-//                        .build()
-//                    chain.proceed(request)
-//                }
+//        val client = OkHttpClient.Builder()
+//            .addInterceptor(interceptor).build()
+            val client = OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .addInterceptor { chain ->
+                    val request = chain.request().newBuilder()
+                        .addHeader("Accept", "application/json")
+                        .build()
+                    chain.proceed(request)
+                }
 
                 // Rajout de ces 2 lignes pour ignorer la validation SSL
-//                .sslSocketFactory(sslContext.socketFactory, trustAllCertificates)
-//                .hostnameVerifier { _, _ -> true }
-//                .build()
+                .sslSocketFactory(sslContext.socketFactory, trustAllCertificates)
+                .hostnameVerifier { _, _ -> true }
+                .build()
 
         val moshi = Moshi.Builder().apply {
             add(KotlinJsonAdapterFactory())
