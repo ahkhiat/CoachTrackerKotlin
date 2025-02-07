@@ -11,9 +11,10 @@ import android.widget.ProgressBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.devid_academy.coachtrackerkotlin.R
-import com.devid_academy.coachtrackerkotlin.data.api.getEvents
+import com.devid_academy.coachtrackerkotlin.data.api.ApiService
 import com.devid_academy.coachtrackerkotlin.data.manager.AuthManager
 import com.devid_academy.coachtrackerkotlin.data.manager.PreferencesManager
+import com.devid_academy.coachtrackerkotlin.data.repository.EventRepository
 import com.devid_academy.coachtrackerkotlin.presentation.adpater.EventAdapter
 import com.devid_academy.coachtrackerkotlin.presentation.auth.LoginFragment
 import com.devid_academy.coachtrackerkotlin.presentation.ui.coach.CreateEventFragment
@@ -23,6 +24,8 @@ class CalendarFragment : Fragment() {
     private lateinit var eventAdapter: EventAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
+    private lateinit var eventRepository: EventRepository
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,9 +35,7 @@ class CalendarFragment : Fragment() {
 
         progressBar = view.findViewById(R.id.progressBar)
 
-
-        val btnCreate = view.findViewById<Button>(R.id.fg_coach_home_btn_create_event)
-        btnCreate.setOnClickListener {
+        view.findViewById<Button>(R.id.fg_coach_home_btn_create_event).setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fg_container, CreateEventFragment())
                 .addToBackStack(null)
@@ -60,7 +61,7 @@ class CalendarFragment : Fragment() {
     }
     private fun refresh() {
         progressBar.visibility = View.VISIBLE
-        getEvents {
+        EventRepository().getEvents {
             eventAdapter.setEvents(it)
             recyclerView.scrollToPosition(eventAdapter.itemCount - 1)
             progressBar.visibility = View.GONE

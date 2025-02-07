@@ -14,16 +14,30 @@ fun getLogin(user: AuthDTO, onResult: (Boolean, String?) -> Unit) {
     call?.enqueue(object : Callback<StatusAuthDTO> {
         override fun onResponse(call: Call<StatusAuthDTO>, response: Response<StatusAuthDTO>) {
             Log.d(ContentValues.TAG, "Réponse du serveur : ${response.body()}")
-            response.body()?.let {
-                if (!it.token.isNullOrEmpty()) {
-                    onResult(true, it.token)
-                    } else {
-                    Log.d("tag", "Body ELSE: ${response.body()}")
-                    onResult(false, it.message)
+//            response.body()?.let {
+//                if (!it.token.isNullOrEmpty()) {
+//                    onResult(true, it.token)
+//                    } else {
+//                    Log.d("tag", "Body ELSE: ${response.body()}")
+//                    onResult(false, it.message)
+//
+//                    Log.i("tag", it.message!!)
+//                }
 
-                    Log.i("tag", it.message!!)
+//                }
+
+            if (response.isSuccessful) {
+                val token = response.body()?.token
+                if (token != null) {
+                    onResult(true, token)
+                } else {
+                    onResult(false, "Token manquant dans la réponse.")
                 }
+            } else {
+                Log.d("Debug Login", "Code :${response.code()}, Response body: ${response.body()}")
+                onResult(false, "")
             }
+
         }
         override fun onFailure(call: Call<StatusAuthDTO>, t: Throwable) {
             Log.e(ContentValues.TAG, t?.message ?: "boo, error")

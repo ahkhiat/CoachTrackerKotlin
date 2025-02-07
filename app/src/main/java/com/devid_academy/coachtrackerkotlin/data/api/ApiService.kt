@@ -28,40 +28,11 @@ object ApiService {
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
 
-        // Desactiver la validation SSL, ATTENTION seulement en mode DEV
-        // DEBUT
-        val trustAllCertificates = object : X509TrustManager {
-            override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
-            override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) {}
-            override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {}
-        }
-
-        val sslContext = SSLContext.getInstance("TLS")
-        sslContext.init(null, arrayOf(TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()).let {
-            it.init(null as KeyStore?)
-            trustAllCertificates
-        }), SecureRandom())
-        // FIN
-
-//        val client = OkHttpClient.Builder()
-//            .addInterceptor(interceptor).build()
-            val client = OkHttpClient.Builder()
-                .addInterceptor(interceptor)
-                .addInterceptor { chain ->
-                    val request = chain.request().newBuilder()
-                        .addHeader("Accept", "application/json")
-                        .build()
-                    chain.proceed(request)
-                }
-
-                // Rajout de ces 2 lignes pour ignorer la validation SSL
-                .sslSocketFactory(sslContext.socketFactory, trustAllCertificates)
-                .hostnameVerifier { _, _ -> true }
-                .build()
+        val client = OkHttpClient.Builder()
+            .addInterceptor(interceptor).build()
 
         val moshi = Moshi.Builder().apply {
             add(KotlinJsonAdapterFactory())
-//            add(DateJsonAdapter())
         }.build()
 
         return Retrofit.Builder()
@@ -78,19 +49,19 @@ object ApiService {
 
 const val MY_TEAM_NAME = "U11F1"
 
-fun getEvents(onResult: (List<EventDTO>) -> Unit) {
-    val call: Call<List<EventDTO>>? = ApiService.getApi().getAllEvents(MY_TEAM_NAME)
-    call?.enqueue(object : Callback<List<EventDTO>> {
-        override fun onResponse(call: Call<List<EventDTO>>, response: Response<List<EventDTO>>) {
-            response.body()?.let {
-                onResult(it)
-            }
-        }
-        override fun onFailure(call: Call<List<EventDTO>>, t: Throwable) {
-            Log.e(TAG, t.message ?: "boo, error")
-        }
-    })
-}
+//fun getEvents(onResult: (List<EventDTO>) -> Unit) {
+//    val call: Call<List<EventDTO>>? = ApiService.getApi().getAllEvents(MY_TEAM_NAME)
+//    call?.enqueue(object : Callback<List<EventDTO>> {
+//        override fun onResponse(call: Call<List<EventDTO>>, response: Response<List<EventDTO>>) {
+//            response.body()?.let {
+//                onResult(it)
+//            }
+//        }
+//        override fun onFailure(call: Call<List<EventDTO>>, t: Throwable) {
+//            Log.e(TAG, t.message ?: "boo, error")
+//        }
+//    })
+//}
 
 //fun getAddCountry(country: CountryDTO, onResult: (Boolean) -> Unit) {
 //    val countryName = country.nom
