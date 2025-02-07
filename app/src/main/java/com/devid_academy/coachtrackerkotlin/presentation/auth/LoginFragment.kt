@@ -13,11 +13,13 @@ import com.devid_academy.coachtrackerkotlin.R
 import com.devid_academy.coachtrackerkotlin.data.User
 import com.devid_academy.coachtrackerkotlin.data.api.getLogin
 import com.devid_academy.coachtrackerkotlin.data.dto.auth.AuthDTO
+import com.devid_academy.coachtrackerkotlin.data.manager.PreferencesManager
 import com.devid_academy.coachtrackerkotlin.presentation.ui.shared.CalendarFragment
 
 
 class LoginFragment : Fragment() {
 
+    private lateinit var message : String
     private lateinit var tvLogin: TextView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,24 +55,22 @@ class LoginFragment : Fragment() {
 
     fun verifyLogin(login: String, password: String) {
         val user = AuthDTO(login, password)
-        getLogin(user) { isSuccess, resultId, resultTokenOrStatus ->
+        getLogin(user) { isSuccess, resultTokenOrStatus ->
             if (isSuccess) {
                 message = "Connexion réussie"
                 PreferencesManager(requireContext()).setToken(resultTokenOrStatus!!)
-                PreferencesManager(requireContext()).setUserId(resultId)
+//                PreferencesManager(requireContext()).setUserId(resultId)
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.fg_container, RecyclerViewArticlesFragment())
+                    .replace(R.id.fg_container, CalendarFragment())
                     .commit()
             } else {
-                message = when (resultTokenOrStatus) {
-                    "5" -> "Problème de sécurité, token inchangé"
-                    "0"-> "Utilisateur inconnu"
-                    else -> "Erreur paramètre"
+                message = resultTokenOrStatus.toString()
                 }
-            }
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         }
     }
+
+}
 //    private fun navigateToRoleSpecificScreen(role: String) {
 //        val targetFragment = when (role) {
 //            "ROLE_COACH" -> CalendarFragment()
@@ -84,7 +84,3 @@ class LoginFragment : Fragment() {
 //        }
 //    }
 
-
-
-
-}
