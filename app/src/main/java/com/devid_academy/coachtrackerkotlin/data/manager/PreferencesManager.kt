@@ -1,6 +1,9 @@
 package com.devid_academy.coachtrackerkotlin.data.manager
 
 import android.content.Context
+import android.util.Log
+import com.auth0.android.jwt.DecodeException
+import com.auth0.android.jwt.JWT
 import com.devid_academy.coachtrackerkotlin.util.SHARED_PREFS
 import com.devid_academy.coachtrackerkotlin.util.TOKEN
 import com.devid_academy.coachtrackerkotlin.util.USER_ID
@@ -21,7 +24,23 @@ class PreferencesManager(context: Context) {
     fun getUserId(): Long {
         return sharedPreferences.getLong(USER_ID, -1L)
     }
-    fun setUserId(id: Long) {
-        sharedPreferences.edit().putLong(USER_ID, id).apply()
+    fun setUserId() {
+        sharedPreferences.edit().putLong(USER_ID, 15).apply()
+        Log.i("USER","USER ID : ${getUserId()}" )
     }
+
+    fun getUsernameFromToken(): String? {
+        val token = sharedPreferences.getString(TOKEN, null)
+        if (token.isNullOrEmpty()) {
+            return null
+        }
+
+        return try {
+            val jwt = JWT(token)
+            jwt.getClaim("username").asString()
+        } catch (exception: DecodeException) {
+            null
+        }
+    }
+
 }

@@ -21,6 +21,10 @@ data class EventDTO(
 
     val stadium: StadiumDTO,
 
-    val season: SeasonDTO
+    val season: SeasonDTO,
+
+    val presences: List<PresenceDTO?>,
+
+    val convocations: List<ConvocationDTO?>
 
 ) : Parcelable

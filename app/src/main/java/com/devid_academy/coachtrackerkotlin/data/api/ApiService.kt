@@ -1,6 +1,5 @@
 package com.devid_academy.coachtrackerkotlin.data.api
 
-import DateJsonAdapter
 import android.content.ContentValues.TAG
 import android.util.Log
 import com.devid_academy.coachtrackerkotlin.data.dto.EventDTO

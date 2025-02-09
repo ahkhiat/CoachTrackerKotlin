@@ -17,7 +17,12 @@
     <!--  RecyclerView Calendar  -->
     <string name="rv_calendar_tv_title">Calendar</string>
 
-
+    <!--  Show Event  -->
+    <string name="toolbar_back_tv">Back</string>
+    <string name="showevent_tv_visitor_team">Opponent team</string>
+    <string name="showevent_tv_title">Team</string>
+    <string name="showevent_tv_location_title">Location</string>
+    <string name="showevent_tv_team_title">Team </string>
 
 
     <string name="hello_blank_fragment">Change moi ça très vite !</string>

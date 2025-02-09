@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.devid_academy.coachtrackerkotlin.R
 import com.devid_academy.coachtrackerkotlin.data.dto.EventDTO
@@ -14,7 +15,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 
-class EventAdapter(): RecyclerView.Adapter<EventAdapter.EventHolder>() {
+class EventAdapter(private val onItemClick: (EventDTO) -> Unit)  : RecyclerView.Adapter<EventAdapter.EventHolder>() {
 
     private val eventsList : MutableList<EventDTO> = mutableListOf()
 
@@ -33,7 +34,13 @@ class EventAdapter(): RecyclerView.Adapter<EventAdapter.EventHolder>() {
     override fun onBindViewHolder(holder: EventAdapter.EventHolder, position: Int) {
         val event = eventsList.get(position)
         with(holder) {
-            tvTitle.text = event.eventType.name
+            if (event.eventType.name == "Match") {
+                tvTitle.text = event.visitorTeam!!.club.name
+            } else {
+                tvTitle.text = event.eventType.name
+                tvTitle.textSize = 14F
+
+            }
             tvLocation.text = event.stadium.name
 
             val dateString = event.date
@@ -46,6 +53,9 @@ class EventAdapter(): RecyclerView.Adapter<EventAdapter.EventHolder>() {
             tvMonth.text = SimpleDateFormat("MMM", Locale.getDefault()).format(date)
             tvTime.text = SimpleDateFormat("HH:mm", Locale.getDefault()).format(date)
 
+            itemLayout.setOnClickListener {
+                onItemClick(event)
+            }
         }
     }
 
@@ -73,6 +83,8 @@ class EventAdapter(): RecyclerView.Adapter<EventAdapter.EventHolder>() {
 
         val tvTitle = itemView.findViewById<TextView>(R.id.item_tv_title)
         val tvLocation = itemView.findViewById<TextView>(R.id.item_tv_location)
+
+        val itemLayout = itemView.findViewById<CardView>(R.id.item_rv_event)
     }
 
 }

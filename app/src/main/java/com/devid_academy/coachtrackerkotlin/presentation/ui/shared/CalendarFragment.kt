@@ -11,13 +11,14 @@ import android.widget.ProgressBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.devid_academy.coachtrackerkotlin.R
-import com.devid_academy.coachtrackerkotlin.data.api.ApiService
 import com.devid_academy.coachtrackerkotlin.data.manager.AuthManager
 import com.devid_academy.coachtrackerkotlin.data.manager.PreferencesManager
 import com.devid_academy.coachtrackerkotlin.data.repository.EventRepository
 import com.devid_academy.coachtrackerkotlin.presentation.adpater.EventAdapter
 import com.devid_academy.coachtrackerkotlin.presentation.auth.LoginFragment
 import com.devid_academy.coachtrackerkotlin.presentation.ui.coach.CreateEventFragment
+import com.devid_academy.coachtrackerkotlin.presentation.ui.coach.ShowEventFragment
+import com.devid_academy.coachtrackerkotlin.util.EVENT_KEY
 
 class CalendarFragment : Fragment() {
 
@@ -25,7 +26,6 @@ class CalendarFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
     private lateinit var eventRepository: EventRepository
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,17 +35,31 @@ class CalendarFragment : Fragment() {
 
         progressBar = view.findViewById(R.id.progressBar)
 
+        eventAdapter = EventAdapter(
+            onItemClick = {
+                event ->
+                val fragmentWithEvent = ShowEventFragment().apply {
+                    arguments = Bundle().apply {
+                        putParcelable(EVENT_KEY, event)
+                    }
+                }
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fg_container, fragmentWithEvent)
+                    .addToBackStack(null)
+                    .commit()
+            }
+        )
+
+        recyclerView = view.findViewById<RecyclerView>(R.id.rv_calendar).apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = eventAdapter
+        }
+
         view.findViewById<Button>(R.id.fg_coach_home_btn_create_event).setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fg_container, CreateEventFragment())
                 .addToBackStack(null)
                 .commit()
-        }
-        eventAdapter = EventAdapter()
-
-        recyclerView = view.findViewById<RecyclerView>(R.id.rv_calendar).apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = eventAdapter
         }
 
         view.findViewById<Button>(R.id.rv_btn_logout).setOnClickListener {

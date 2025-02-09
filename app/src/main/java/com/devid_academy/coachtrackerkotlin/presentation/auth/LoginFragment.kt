@@ -1,6 +1,7 @@
 package com.devid_academy.coachtrackerkotlin.presentation.auth
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -59,7 +60,10 @@ class LoginFragment : Fragment() {
             if (isSuccess) {
                 message = "Connexion réussie"
                 PreferencesManager(requireContext()).setToken(resultTokenOrStatus!!)
-//                PreferencesManager(requireContext()).setUserId(resultId)
+//                PreferencesManager(requireContext()).setUserId()
+                val username = PreferencesManager(requireContext()).getUsernameFromToken()
+                Log.i("USER NAME", "USER NAME : ${username}")
+
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.fg_container, CalendarFragment())
                     .commit()
