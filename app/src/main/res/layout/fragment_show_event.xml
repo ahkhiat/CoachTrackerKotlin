@@ -84,6 +84,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+
             <TextView
                 android:id="@+id/showevent_tv_visitor_team"
                 android:layout_width="wrap_content"
@@ -119,6 +120,7 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/showevent_tv_vs" />
+
 
             <TextView
                 android:id="@+id/showevent_tv_time"
@@ -166,6 +168,16 @@
                 android:text="@string/showevent_tv_team_title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/showevent_tv_visitor_team" />
+
+            <LinearLayout
+                android:id="@+id/linear_layout_player_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="24dp">
+
+
+            </LinearLayout>
 
 
 

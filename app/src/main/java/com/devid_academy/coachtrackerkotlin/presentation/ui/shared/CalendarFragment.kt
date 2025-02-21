@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.devid_academy.coachtrackerkotlin.R
 import com.devid_academy.coachtrackerkotlin.data.manager.AuthManager
-import com.devid_academy.coachtrackerkotlin.data.manager.PreferencesManager
 import com.devid_academy.coachtrackerkotlin.data.repository.EventRepository
 import com.devid_academy.coachtrackerkotlin.presentation.adpater.EventAdapter
 import com.devid_academy.coachtrackerkotlin.presentation.auth.LoginFragment
@@ -63,8 +62,7 @@ class CalendarFragment : Fragment() {
         }
 
         view.findViewById<Button>(R.id.rv_btn_logout).setOnClickListener {
-            AuthManager(PreferencesManager(requireContext()))
-                .logout()
+            AuthManager.logout()
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fg_container, LoginFragment())
                 .commit()

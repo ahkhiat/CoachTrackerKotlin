@@ -3,12 +3,11 @@ package com.devid_academy.coachtrackerkotlin.data.dto
 import android.os.Parcelable
 import com.squareup.moshi.Json
 import kotlinx.parcelize.Parcelize
-import java.util.Date
 
 @Parcelize
 data class EventDTO(
-    val id: Int,
 
+    val id: Int,
     val date: String,
 
     @Json(name = "event_type")
@@ -20,11 +19,8 @@ data class EventDTO(
     val visitorTeam: VisitorTeamDTO?,
 
     val stadium: StadiumDTO,
-
     val season: SeasonDTO,
-
-    val presences: List<PresenceDTO?>,
-
-    val convocations: List<ConvocationDTO?>
+    val presences: List<PresenceDTO>?,
+    val convocations: List<ConvocationDTO>?
 
 ) : Parcelable

@@ -6,13 +6,9 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ConvocationDTO (
 
-    val id: Int,
-
+    val id: Int?,
     val player: PlayerDTO,
-
-    val event: EventDTO,
-
-    val status: String
-
+    val event: EventDTO?,
+    val status: Int
 
 ) : Parcelable

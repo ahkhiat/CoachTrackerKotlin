@@ -3,12 +3,7 @@
 
     <!-- Home Fragment -->
     <string name="fg_home_title">Bienvenue sur le Fragment Home</string>
-    <!-- Login Fragment -->
-    <string name="fg_login_title">Veuillez vous connecter</string>
-    <string name="fg_login_email_ph">Votre email</string>
-    <string name="fg_login_password_ph">Votre password</string>
-    <string name="fg_login_btn_login">Se connecter</string>
-    <string name="tv_splash">Chargement en cours...</string>
+
 
     <!-- Create Event Fragment   -->
     <string name="tv_fg_event_create_title">Créer événement</string>

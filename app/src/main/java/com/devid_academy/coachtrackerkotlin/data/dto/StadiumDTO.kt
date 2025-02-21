@@ -5,8 +5,8 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class StadiumDTO(
+    val id: Int?,
     val name: String,
-    
     val adress: String?,
 
     @Json(name = "postal_code")
@@ -14,4 +14,8 @@ data class StadiumDTO(
 
     val town: String?
     
-): Parcelable
+): Parcelable {
+    override fun toString(): String {
+        return name
+    }
+}

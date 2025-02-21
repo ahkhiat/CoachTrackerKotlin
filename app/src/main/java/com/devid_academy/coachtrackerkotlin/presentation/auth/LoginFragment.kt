@@ -1,90 +1,89 @@
 package com.devid_academy.coachtrackerkotlin.presentation.auth
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.commit
+import androidx.lifecycle.lifecycleScope
 import com.devid_academy.coachtrackerkotlin.R
-import com.devid_academy.coachtrackerkotlin.data.User
-import com.devid_academy.coachtrackerkotlin.data.api.getLogin
-import com.devid_academy.coachtrackerkotlin.data.dto.auth.AuthDTO
-import com.devid_academy.coachtrackerkotlin.data.manager.PreferencesManager
+import com.devid_academy.coachtrackerkotlin.data.dto.auth.LoginDTO
+import com.devid_academy.coachtrackerkotlin.databinding.FragmentLoginBinding
 import com.devid_academy.coachtrackerkotlin.presentation.ui.shared.CalendarFragment
+import com.devid_academy.coachtrackerkotlin.presentation.viewmodel.LoginState
+import com.devid_academy.coachtrackerkotlin.presentation.viewmodel.LoginViewModel
+import kotlinx.coroutines.launch
 
 
 class LoginFragment : Fragment() {
 
-    private lateinit var message : String
-    private lateinit var tvLogin: TextView
+    private var _binding: FragmentLoginBinding? = null
+    private val binding get() = _binding!!
+    private val viewModel: LoginViewModel by activityViewModels()
+    private lateinit var progressBar: ProgressBar
+    private lateinit var message: String
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_login, container, false)
-
-        tvLogin = view.findViewById(R.id.tv_login)
-
-        view.findViewById<Button>(R.id.fg_login_btn_login).setOnClickListener {
-            val email = view.findViewById<EditText>(R.id.fg_login_email)
-                .text.toString().trim()
-            val password = view.findViewById<EditText>(R.id.fg_login_password)
-                .text.toString().trim()
-
-            if(email.isNotEmpty() && password.isNotEmpty()){
-                verifyLogin(email, password)
-            } else {
-                Toast.makeText(context, "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show()
-            }
-//            view.findViewById<TextView>(R.id.login_tv_signup).setOnClickListener{
-//                parentFragmentManager.beginTransaction()
-//                    .replace(R.id.fg_container, RegisterFragment())
-//                    .addToBackStack(null)
-//                    .commit()
-//            }
-
-
-        }
-
-        return view
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    fun verifyLogin(login: String, password: String) {
-        val user = AuthDTO(login, password)
-        getLogin(user) { isSuccess, resultTokenOrStatus ->
-            if (isSuccess) {
-                message = "Connexion réussie"
-                PreferencesManager(requireContext()).setToken(resultTokenOrStatus!!)
-//                PreferencesManager(requireContext()).setUserId()
-                val username = PreferencesManager(requireContext()).getUsernameFromToken()
-                Log.i("USER NAME", "USER NAME : ${username}")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        progressBar = binding.loginProgressBar
+        observeLoginState()
 
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.fg_container, CalendarFragment())
-                    .commit()
-            } else {
-                message = "Données de connexion invalides"
+        with(binding) {
+            loginBtnLogin.setOnClickListener {
+                val login = loginEtEmail.text.toString().trim()
+                val password = loginEtPassword.text.toString().trim()
+
+                if(login.isNotEmpty() && password.isNotEmpty()){
+                    val user = LoginDTO(login, password)
+                    viewModel.verifyLogin(user)
+
+                } else {
+                    Toast.makeText(context, "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show()
                 }
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            }
+            loginTvSignup.setOnClickListener{
+                parentFragmentManager.commit {
+                    replace(R.id.fg_container, RegisterFragment())
+                    addToBackStack(null)
+                }
+            }
         }
     }
 
-}
-//    private fun navigateToRoleSpecificScreen(role: String) {
-//        val targetFragment = when (role) {
-//            "ROLE_COACH" -> CalendarFragment()
-//            else -> null
-//        }
-//
-//        if (targetFragment != null) {
-//            parentFragmentManager.beginTransaction()
-//                .replace(R.id.fg_container, targetFragment)
-//                .commit()
-//        }
-//    }
+    private fun observeLoginState() {
+        lifecycleScope.launch {
+            viewModel.loginState.collect {
+                when (it) {
+                    is LoginState.Loading -> {
+                        progressBar.visibility = View.VISIBLE
+                    }
+                    is LoginState.Success -> {
+                        progressBar.visibility = View.GONE
+                        Toast.makeText(context, getString(R.string.login_successful), Toast.LENGTH_SHORT).show()
 
+                        parentFragmentManager.commit {
+                            replace(R.id.fg_container, CalendarFragment())
+                        }
+                    }
+                    is LoginState.Error -> {
+                        progressBar.visibility = View.GONE
+                        Toast.makeText(context, getString(R.string.invalid_credentials), Toast.LENGTH_SHORT).show()
+                    }
+                    else -> LoginState.Idle
+                }
+            }
+        }
+    }
+}

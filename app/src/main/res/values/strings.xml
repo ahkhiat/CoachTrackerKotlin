@@ -3,16 +3,42 @@
 
     <!-- Home Fragment -->
     <string name="fg_home_title">Welcome on Home Fragment</string>
-    <!-- Login Fragment -->
-    <string name="fg_login_title">Please login</string>
-    <string name="fg_login_email_ph">Your email</string>
-    <string name="fg_login_password_ph">Your password</string>
-    <string name="fg_login_btn_login">Log in</string>
+
     <string name="tv_splash">Loading...</string>
+
+    <!--  Login Fragement  -->
+    <string name="login_tv_title">Please sign in</string>
+    <string name="login_et_email">Email</string>
+    <string name="login_et_password">Password</string>
+    <string name="login_btn_login">Sign in</string>
+    <string name="login_tv_not_registered">Don\'t have an account ? </string>
+    <string name="login_tv_signup">Sign up</string>
+    <string name="invalid_credentials">Invalid credentials</string>
+    <string name="login_successful">Login successful</string>
+
+    <!--  Register Fragement  -->
+    <string name="register_tv_title">Please register</string>
+    <string name="register_et_email">Email</string>
+    <string name="register_et_password">Password</string>
+    <string name="register_et_password_confirm">Confirm password</string>
+
+    <string name="register_et_firstname">Firstname</string>
+    <string name="register_et_lastname">Lastname</string>
+    <string name="register_et_birthdate">Birthdate</string>
+
+    <string name="register_btn_register">Sign up</string>
+    <string name="register_tv_already_registered">Already registered ? </string>
+    <string name="register_tv_signup">Sign in</string>
+
+    <string name="passwords_differents">Passwords don\'t match</string>
+    <string name="fill_all_inputs">Please fill all inputs</string>
 
 
     <!-- Event Create Fragment   -->
     <string name="tv_fg_event_create_title">Create Event</string>
+
+    <!--  Create Match Fragment  -->
+    <string name="create_match_fg_tv_title">Create Match</string>
 
     <!--  RecyclerView Calendar  -->
     <string name="rv_calendar_tv_title">Calendar</string>
@@ -23,6 +49,13 @@
     <string name="showevent_tv_title">Team</string>
     <string name="showevent_tv_location_title">Location</string>
     <string name="showevent_tv_team_title">Team </string>
+
+
+    <!--  Status  -->
+    <string name="pending">pending</string>
+    <string name="accepted">accepted</string>
+    <string name="rejected">rejected</string>
+    <string name="status_undefined">status undefined</string>
 
 
     <string name="hello_blank_fragment">Change moi ça très vite !</string>

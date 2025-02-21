@@ -3,7 +3,7 @@ package com.devid_academy.coachtrackerkotlin.data.dto.auth
 import com.squareup.moshi.Json
 
 
-data class AuthDTO (
+data class LoginDTO (
     @Json(name = "email")
     val name: String,
 

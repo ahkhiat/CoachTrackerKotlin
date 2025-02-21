@@ -7,10 +7,10 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class PlayerDTO (
 
-    val id: Int,
-
+    val id: Int?,
     val user : UserDTO,
 
-    @Json(name = "play_in")
+    @Json(name = "plays_in")
     val playsInTeam : PlayerDTO?
+
 ) : Parcelable

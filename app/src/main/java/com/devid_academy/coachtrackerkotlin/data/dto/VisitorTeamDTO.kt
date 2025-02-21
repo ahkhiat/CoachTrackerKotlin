@@ -5,8 +5,13 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class VisitorTeamDTO(
+    val id: Int?,
     val club: ClubDTO,
 
     @Json(name = "age_category")
-    val ageCategory: AgeCategoryDTO
-): Parcelable
+    val ageCategory: AgeCategoryDTO?
+): Parcelable {
+    override fun toString(): String {
+        return club.name + " " + ageCategory?.name
+    }
+}

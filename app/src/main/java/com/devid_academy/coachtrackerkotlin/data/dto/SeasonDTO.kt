@@ -5,4 +5,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class SeasonDTO(
     val name: String
-): Parcelable
+): Parcelable {
+    override fun toString(): String {
+        return name
+    }
+}

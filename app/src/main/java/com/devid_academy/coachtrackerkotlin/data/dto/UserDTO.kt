@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 data class UserDTO (
 
     @Json(name = "id")
-    val id: Int,
+    val id: Int?,
 
     val firstname : String,
 

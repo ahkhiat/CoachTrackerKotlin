@@ -1,6 +1,7 @@
 package com.devid_academy.coachtrackerkotlin.data.manager
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import com.auth0.android.jwt.DecodeException
 import com.auth0.android.jwt.JWT
@@ -9,8 +10,13 @@ import com.devid_academy.coachtrackerkotlin.util.TOKEN
 import com.devid_academy.coachtrackerkotlin.util.USER_ID
 
 
-class PreferencesManager(context: Context) {
-    private val sharedPreferences = context.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
+object PreferencesManager {
+
+    private lateinit var sharedPreferences: SharedPreferences
+
+    fun init(context: Context) {
+        sharedPreferences = context.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
+    }
 
     fun getToken(): String? {
         return sharedPreferences.getString(TOKEN, null)

@@ -47,13 +47,13 @@
         android:id="@+id/fg_coach_home_btn_create_event"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginBottom="52dp"
-        android:background="@drawable/roundedbutton"
-        android:text="+"
+        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="30dp"
+        android:elevation="5dp"
+        android:background="@drawable/calendar_add_event"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.849"
-        app:layout_constraintStart_toStartOf="parent" />
+         />
 
     <Button
         android:id="@+id/rv_btn_logout"

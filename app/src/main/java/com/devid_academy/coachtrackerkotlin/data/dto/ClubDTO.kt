@@ -4,5 +4,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ClubDTO(
+    val id: Int?,
     val name: String
 ): Parcelable
