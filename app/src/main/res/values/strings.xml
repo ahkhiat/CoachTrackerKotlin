@@ -59,5 +59,20 @@
 
 
     <string name="hello_blank_fragment">Change moi ça très vite !</string>
+    <string name="profile_tv_team_title">My team</string>
+    <string name="profile_tv_phone">phone</string>
+    <string name="profile_tv_phone_title">phone</string>
+    <string name="profile_tv_birthdate_title">Birthdate</string>
+    <string name="profile_tv_email_title">Email</string>
+    <string name="profile_tv_user_informations_title">User informations</string>
+    <string name="profile_tv_title">Profile</string>
+    <string name="fg_team_players_tv_title">Players</string>
+    <string name="fg_team_coaches_tv_title">Coaches</string>
+    <string name="menu_calendar">Calendar</string>
+    <string name="menu_user">Profile</string>
+    <string name="profile_tv_logout">Logout</string>
+    <string name="menu_team">Team</string>
+    <string name="fg_team_tv_title">My team</string>
+    <string name="inputs_ok">Valid input</string>
 
 </resources>

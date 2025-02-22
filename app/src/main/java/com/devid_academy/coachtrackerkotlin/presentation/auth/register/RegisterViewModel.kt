@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class RegisterViewModel: ViewModel() {
+class RegisterViewModel() : ViewModel() {
 
     private val registerRepository = RegisterRepository()
     private val _registerState = MutableStateFlow<RegisterState>(RegisterState.Idle)

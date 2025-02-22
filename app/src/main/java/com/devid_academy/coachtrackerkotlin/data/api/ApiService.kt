@@ -2,6 +2,7 @@ package com.devid_academy.coachtrackerkotlin.data.api
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import androidx.lifecycle.ViewModel
 import com.devid_academy.coachtrackerkotlin.data.dto.EventDTO
 
 import com.squareup.moshi.Moshi
@@ -41,4 +42,5 @@ object ApiService {
             .build()
     }
     fun getApi() = getClient().create(ApiInterface::class.java)
+    fun ViewModel.getApi() = getClient().create(ApiInterface::class.java)
 }

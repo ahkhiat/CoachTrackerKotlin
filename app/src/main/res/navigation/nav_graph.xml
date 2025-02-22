@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.devid_academy.coachtrackerkotlin.presentation.ui.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_rvCalendarFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true"
+            app:destination="@id/rvCalendarFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/rvCalendarFragment"
+        android:name="com.devid_academy.coachtrackerkotlin.presentation.ui.shared.rvcalendar.RvCalendarFragment"
+        android:label="fragment_rv_calendar"
+        tools:layout="@layout/fragment_rv_calendar" >
+        <action
+            android:id="@+id/action_rvCalendarFragment_to_createEventFragment"
+            app:destination="@id/createEventFragment" />
+        <action
+            android:id="@+id/action_rvCalendarFragment_to_showEventFragment"
+            app:destination="@id/showEventFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createEventFragment"
+        android:name="com.devid_academy.coachtrackerkotlin.presentation.ui.coach.createevent.CreateEventFragment"
+        android:label="fragment_event_create"
+        tools:layout="@layout/fragment_event_create" >
+        <action
+            android:id="@+id/action_createEventFragment_to_createMatchFragment"
+            app:destination="@id/createMatchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/showEventFragment"
+        android:name="com.devid_academy.coachtrackerkotlin.presentation.ui.coach.ShowEventFragment"
+        android:label="fragment_show_event"
+        tools:layout="@layout/fragment_show_event" />
+
+
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.devid_academy.coachtrackerkotlin.presentation.ui.shared.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_splashFragment"
+            app:destination="@id/splashFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createMatchFragment"
+        android:name="com.devid_academy.coachtrackerkotlin.presentation.ui.coach.creatematch.CreateMatchFragment"
+        android:label="fragment_create_match"
+        tools:layout="@layout/fragment_create_match" />
+    <fragment
+        android:id="@+id/teamFragment"
+        android:name="com.devid_academy.coachtrackerkotlin.presentation.ui.shared.rvteam.TeamFragment"
+        android:label="fragment_team"
+        tools:layout="@layout/fragment_team" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.devid_academy.coachtrackerkotlin.presentation.auth.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_rvCalendarFragment"
+            app:destination="@id/rvCalendarFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.devid_academy.coachtrackerkotlin.presentation.auth.register.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_rvCalendarFragment"
+            app:destination="@id/rvCalendarFragment" />
+    </fragment>
+</navigation>

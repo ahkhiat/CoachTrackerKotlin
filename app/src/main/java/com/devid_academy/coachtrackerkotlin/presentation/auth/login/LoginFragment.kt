@@ -1,4 +1,4 @@
-package com.devid_academy.coachtrackerkotlin.presentation.auth
+package com.devid_academy.coachtrackerkotlin.presentation.auth.login
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,10 +12,13 @@ import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import com.devid_academy.coachtrackerkotlin.R
 import com.devid_academy.coachtrackerkotlin.data.dto.auth.LoginDTO
+import com.devid_academy.coachtrackerkotlin.data.manager.PreferencesManager
 import com.devid_academy.coachtrackerkotlin.databinding.FragmentLoginBinding
-import com.devid_academy.coachtrackerkotlin.presentation.ui.shared.CalendarFragment
+import com.devid_academy.coachtrackerkotlin.presentation.auth.register.RegisterFragment
+import com.devid_academy.coachtrackerkotlin.presentation.ui.shared.rvcalendar.RvCalendarFragment
 import com.devid_academy.coachtrackerkotlin.presentation.viewmodel.LoginState
 import com.devid_academy.coachtrackerkotlin.presentation.viewmodel.LoginViewModel
+import com.devid_academy.coachtrackerkotlin.util.navController
 import kotlinx.coroutines.launch
 
 
@@ -26,6 +29,9 @@ class LoginFragment : Fragment() {
     private val viewModel: LoginViewModel by activityViewModels()
     private lateinit var progressBar: ProgressBar
     private lateinit var message: String
+
+    private lateinit var emailForm: String
+    private lateinit var passwordForm: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,26 +44,21 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         progressBar = binding.loginProgressBar
+
+        viewModel.resetLoginState()
         observeLoginState()
 
         with(binding) {
+
             loginBtnLogin.setOnClickListener {
-                val login = loginEtEmail.text.toString().trim()
-                val password = loginEtPassword.text.toString().trim()
+                emailForm = loginEtEmail.text.toString().trim()
+                passwordForm = loginEtPassword.text.toString().trim()
 
-                if(login.isNotEmpty() && password.isNotEmpty()){
-                    val user = LoginDTO(login, password)
-                    viewModel.verifyLogin(user)
+                viewModel.verifyLogin(emailForm, passwordForm)
 
-                } else {
-                    Toast.makeText(context, "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show()
-                }
             }
             loginTvSignup.setOnClickListener{
-                parentFragmentManager.commit {
-                    replace(R.id.fg_container, RegisterFragment())
-                    addToBackStack(null)
-                }
+                navController().navigate(R.id.action_loginFragment_to_registerFragment)
             }
         }
     }
@@ -69,12 +70,14 @@ class LoginFragment : Fragment() {
                     is LoginState.Loading -> {
                         progressBar.visibility = View.VISIBLE
                     }
+                    is LoginState.Incomplete -> {
+                        Toast.makeText(context, getString(R.string.fill_all_inputs), Toast.LENGTH_SHORT).show()
+                    }
                     is LoginState.Success -> {
-                        progressBar.visibility = View.GONE
-                        Toast.makeText(context, getString(R.string.login_successful), Toast.LENGTH_SHORT).show()
-
-                        parentFragmentManager.commit {
-                            replace(R.id.fg_container, CalendarFragment())
+                        if(!(PreferencesManager.getToken()).isNullOrEmpty()) {
+                            progressBar.visibility = View.GONE
+                            Toast.makeText(context, getString(R.string.login_successful), Toast.LENGTH_SHORT).show()
+                            navController().navigate(R.id.action_loginFragment_to_rvCalendarFragment)
                         }
                     }
                     is LoginState.Error -> {
@@ -86,4 +89,5 @@ class LoginFragment : Fragment() {
             }
         }
     }
+
 }

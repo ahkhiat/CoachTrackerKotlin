@@ -16,6 +16,8 @@ import com.devid_academy.coachtrackerkotlin.R
 import com.devid_academy.coachtrackerkotlin.data.dto.EventDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.PlayerDTO
 import com.devid_academy.coachtrackerkotlin.data.repository.EventRepository
+import com.devid_academy.coachtrackerkotlin.databinding.FragmentShowEventBinding
+import com.devid_academy.coachtrackerkotlin.databinding.FragmentTeamBinding
 import com.devid_academy.coachtrackerkotlin.util.EVENT_KEY
 import com.devid_academy.coachtrackerkotlin.util.getStatus
 import java.util.Locale
@@ -24,12 +26,20 @@ import java.util.Locale
 
 class ShowEventFragment : Fragment() {
 
-    @SuppressLint("SetTextI18n")
+    private var _binding: FragmentShowEventBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_show_event, container, false)
+        _binding = FragmentShowEventBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         val eventFromParent: EventDTO? = arguments?.getParcelable(EVENT_KEY)
 
         Log.i("EVENT ID", "EVENT ID : ${eventFromParent?.id}")
@@ -89,10 +99,6 @@ class ShowEventFragment : Fragment() {
 
         view.findViewById<TextView>(R.id.showevent_tv_time)
             .text = time
-
-
-
-        return view
     }
 
 

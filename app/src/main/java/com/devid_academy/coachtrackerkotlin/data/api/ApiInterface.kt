@@ -5,6 +5,7 @@ import com.devid_academy.coachtrackerkotlin.data.dto.EventDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.EventTypeDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.SeasonDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.StadiumDTO
+import com.devid_academy.coachtrackerkotlin.data.dto.TeamDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.VisitorTeamDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.auth.LoginDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.auth.RegisterDTO
@@ -19,12 +20,15 @@ import retrofit2.http.Query
 
 interface ApiInterface {
 
+//    Auth
     @POST(ApiRoutes.LOGIN_USER)
     suspend fun loginUser(@Body user: LoginDTO): StatusAuthDTO
 
     @POST(ApiRoutes.REGISTER_USER)
     suspend fun registerUser(@Body user: RegisterDTO): StatusAuthDTO
 
+
+//    Events
     @GET(ApiRoutes.GET_ALL_EVENTS)
     fun getAllEvents(@Query("team.name") teamName: String): Call<List<EventDTO>>
 
@@ -37,6 +41,13 @@ interface ApiInterface {
     @GET(ApiRoutes.GET_EVENT_TYPES)
     suspend fun getEventTypes(): List<EventTypeDTO>
 
+
+//    Teams
+    @GET(ApiRoutes.GET_TEAM)
+    suspend fun getTeam(@Path("id") teamId: Int): TeamDTO
+
+
+//    Spinner menus
     @GET(ApiRoutes.GET_VISITOR_TEAM_LIST)
     suspend fun getVisitorTeamList(): List<VisitorTeamDTO>
 

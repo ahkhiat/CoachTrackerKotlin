@@ -58,15 +58,15 @@ class EventRepository() {
 
     private val api = ApiService.getApi()
 
-    suspend fun getEventTypes(): List<EventTypeDTO> {
-        return try {
-            val response = api.getEventTypes() ?: emptyList()
-            Log.i("API CALL", "REPO CATEGORIES : $response")
-            response
-        } catch (e: Exception) {
-            Log.e("API CALL", "Erreur : ${e.message}", e)
-            emptyList()
-        }
-    }
+//    suspend fun getEventTypes(): List<EventTypeDTO> {
+//        return try {
+//            val response = api.getEventTypes() ?: emptyList()
+//            Log.i("API CALL", "REPO CATEGORIES : $response")
+//            response
+//        } catch (e: Exception) {
+//            Log.e("API CALL", "Erreur : ${e.message}", e)
+//            emptyList()
+//        }
+//    }
 
 }

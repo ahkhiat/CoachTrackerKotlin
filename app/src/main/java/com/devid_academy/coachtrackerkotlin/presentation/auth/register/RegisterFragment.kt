@@ -1,4 +1,4 @@
-package com.devid_academy.coachtrackerkotlin.presentation.auth
+package com.devid_academy.coachtrackerkotlin.presentation.auth.register
 
 import android.app.DatePickerDialog
 import android.icu.util.Calendar
@@ -13,10 +13,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import com.devid_academy.coachtrackerkotlin.R
-import com.devid_academy.coachtrackerkotlin.data.dto.auth.LoginDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.auth.RegisterDTO
 import com.devid_academy.coachtrackerkotlin.databinding.FragmentRegisterBinding
-import com.devid_academy.coachtrackerkotlin.presentation.ui.shared.CalendarFragment
+import com.devid_academy.coachtrackerkotlin.presentation.auth.login.LoginFragment
+import com.devid_academy.coachtrackerkotlin.presentation.ui.shared.rvcalendar.RvCalendarFragment
 import com.devid_academy.coachtrackerkotlin.presentation.viewmodel.RegisterState
 import com.devid_academy.coachtrackerkotlin.presentation.viewmodel.RegisterViewModel
 import kotlinx.coroutines.launch
@@ -111,7 +111,7 @@ class RegisterFragment : Fragment() {
                         Toast.makeText(context, "Connexion réussie", Toast.LENGTH_SHORT).show()
 
                         parentFragmentManager.commit {
-                            replace(R.id.fg_container, CalendarFragment())
+                            replace(R.id.fg_container, RvCalendarFragment())
                         }
                     }
                     is RegisterState.Error -> {
