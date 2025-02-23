@@ -1,4 +1,4 @@
-package com.devid_academy.coachtrackerkotlin.data.api
+package com.devid_academy.coachtrackerkotlin.data.network
 
 object ApiRoutes {
 

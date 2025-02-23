@@ -17,6 +17,7 @@
     <string name="menu_calendar">Calendar</string>
     <string name="menu_user">Profile</string>
     <string name="inputs_ok">Valid input</string>
+    <string name="undefinded_error">Undefined error</string>
 
 
 </resources>

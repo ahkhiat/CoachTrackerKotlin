@@ -1,8 +1,7 @@
 package com.devid_academy.coachtrackerkotlin.data.repository
 
 import android.util.Log
-import com.devid_academy.coachtrackerkotlin.data.api.ApiService
-import com.devid_academy.coachtrackerkotlin.data.dto.EventTypeDTO
+import com.devid_academy.coachtrackerkotlin.data.network.ApiService
 import com.devid_academy.coachtrackerkotlin.data.dto.SeasonDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.StadiumDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.VisitorTeamDTO

@@ -1,16 +1,12 @@
 package com.devid_academy.coachtrackerkotlin.presentation.ui.shared.rvcalendar
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.devid_academy.coachtrackerkotlin.data.api.ApiService
+import com.devid_academy.coachtrackerkotlin.data.network.ApiService
 import com.devid_academy.coachtrackerkotlin.data.dto.EventTypeDTO
-import com.devid_academy.coachtrackerkotlin.data.repository.EventRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 

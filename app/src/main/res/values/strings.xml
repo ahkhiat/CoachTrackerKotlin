@@ -74,5 +74,6 @@
     <string name="menu_team">Team</string>
     <string name="fg_team_tv_title">My team</string>
     <string name="inputs_ok">Valid input</string>
+    <string name="undefinded_error">Undefined error</string>
 
 </resources>

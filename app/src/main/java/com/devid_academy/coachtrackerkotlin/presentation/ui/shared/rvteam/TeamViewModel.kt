@@ -5,8 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.devid_academy.coachtrackerkotlin.data.api.ApiService
-import com.devid_academy.coachtrackerkotlin.data.api.ApiService.getApi
+import com.devid_academy.coachtrackerkotlin.data.network.ApiService.getApi
 import com.devid_academy.coachtrackerkotlin.data.dto.TeamDTO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,11 +20,10 @@ class TeamViewModel: ViewModel() {
     val teamLiveData : LiveData<TeamDTO> = _teamLiveData
 
     init {
+        Log.d("VM TEAM INIT", "ViewModel initialisé, lancement de getTeam()")
         getTeam()
     }
     fun getTeam() {
-
-
         viewModelScope.launch {
             _isLoading.value = true
             try {

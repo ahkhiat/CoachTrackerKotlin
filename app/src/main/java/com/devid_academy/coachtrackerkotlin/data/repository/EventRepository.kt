@@ -2,9 +2,8 @@ package com.devid_academy.coachtrackerkotlin.data.repository
 
 import android.content.ContentValues.TAG
 import android.util.Log
-import com.devid_academy.coachtrackerkotlin.data.api.ApiService
+import com.devid_academy.coachtrackerkotlin.data.network.ApiService
 import com.devid_academy.coachtrackerkotlin.data.dto.EventDTO
-import com.devid_academy.coachtrackerkotlin.data.dto.EventTypeDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.response.ResponseCreateDTO
 import com.devid_academy.coachtrackerkotlin.util.MY_TEAM_NAME
 import retrofit2.Call
