@@ -10,6 +10,7 @@ data class VisitorTeamDTO(
 
     @Json(name = "age_category")
     val ageCategory: AgeCategoryDTO?
+
 ): Parcelable {
     override fun toString(): String {
         return club.name + " " + ageCategory?.name

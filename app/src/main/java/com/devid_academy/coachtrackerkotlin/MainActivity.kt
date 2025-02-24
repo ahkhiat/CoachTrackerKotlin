@@ -16,7 +16,9 @@ import com.devid_academy.coachtrackerkotlin.presentation.ui.shared.rvcalendar.Rv
 import com.devid_academy.coachtrackerkotlin.util.SHARED_PREFS
 import com.devid_academy.coachtrackerkotlin.util.TOKEN
 import com.devid_academy.coachtrackerkotlin.presentation.auth.login.LoginFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

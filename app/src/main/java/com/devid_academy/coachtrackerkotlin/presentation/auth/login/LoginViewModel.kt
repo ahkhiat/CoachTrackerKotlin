@@ -11,6 +11,7 @@ import com.devid_academy.coachtrackerkotlin.data.dto.UserDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.auth.LoginDTO
 import com.devid_academy.coachtrackerkotlin.data.manager.AuthManager
 import com.devid_academy.coachtrackerkotlin.data.manager.PreferencesManager
+import com.devid_academy.coachtrackerkotlin.data.network.ApiService.getApi
 import com.devid_academy.coachtrackerkotlin.data.repository.LoginRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,6 +51,10 @@ class LoginViewModel() : ViewModel() {
                         statusAuth?.token?.let {
                             PreferencesManager.setToken(it)
                         }
+                        PreferencesManager.saveUser(getApi().getUserProfile())
+
+                        Log.i("PROFILE", "PROFILE : ${PreferencesManager.getUser()}")
+
                         _loginState.value = LoginState.Success
                     } else {
                         Log.e("LOGIN_VM", "Token invalide, état mis à Invalid")

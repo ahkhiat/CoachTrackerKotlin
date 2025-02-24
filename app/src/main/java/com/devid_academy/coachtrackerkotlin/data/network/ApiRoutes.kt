@@ -21,6 +21,8 @@ object ApiRoutes {
     const val GET_STATIUM_LIST = "stadia"
     const val GET_SEASON_LIST = "seasons"
 
+    const val GET_USER_PROFILE = "user/profile"
+
 
 
 }

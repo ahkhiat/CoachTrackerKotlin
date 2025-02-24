@@ -4,6 +4,10 @@ plugins {
     id("kotlin-parcelize")
     id("androidx.navigation.safeargs.kotlin")
 
+    id("com.google.dagger.hilt.android")
+    kotlin("kapt")
+
+
 }
 
 android {
@@ -70,6 +74,11 @@ dependencies {
 
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.5")
     implementation("androidx.navigation:navigation-ui-ktx:2.8.5")
+
+    val hiltVersion = "2.44.2"
+
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
 
 
 }

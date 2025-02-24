@@ -11,6 +11,7 @@ import com.devid_academy.coachtrackerkotlin.data.dto.auth.LoginDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.auth.RegisterDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.auth.StatusAuthDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.response.ResponseCreateDTO
+import com.devid_academy.coachtrackerkotlin.data.dto.UserProfileDTO
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -26,6 +27,10 @@ interface ApiInterface {
 
     @POST(ApiRoutes.REGISTER_USER)
     suspend fun registerUser(@Body user: RegisterDTO): StatusAuthDTO
+
+//    User
+    @GET(ApiRoutes.GET_USER_PROFILE)
+    suspend fun getUserProfile(): UserProfileDTO
 
 
 //    Events
