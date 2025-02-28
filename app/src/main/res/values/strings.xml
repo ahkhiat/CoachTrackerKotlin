@@ -76,5 +76,6 @@
     <string name="inputs_ok">Valid input</string>
     <string name="undefinded_error">Undefined error</string>
     <string name="not_provided">not provided</string>
+    <string name="register_successful">Register successful</string>
 
 </resources>

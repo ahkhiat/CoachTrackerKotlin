@@ -59,7 +59,7 @@ class RvCalendarFragment : Fragment() {
             }
 
 
-            refresh()
+//            refresh()
 
             viewmodel.isLoading.observe(viewLifecycleOwner) {
                 progressBar.visibility = if (it) View.VISIBLE else View.GONE
@@ -74,15 +74,15 @@ class RvCalendarFragment : Fragment() {
 
 
     }
-    private fun refresh() {
-        binding.progressBar.visibility = View.VISIBLE
-        EventRepository().getEvents {
-            eventAdapter.submitList(it)
-//            recyclerView.scrollToPosition(eventAdapter.itemCo
-
-            Log.d("DEBUG", "Nombre d'événements récupérés : ${eventAdapter.itemCount}")
-        }
-    }
+//    private fun refresh() {
+//        binding.progressBar.visibility = View.VISIBLE
+//        EventRepository().getEvents {
+//            eventAdapter.submitList(it)
+////            recyclerView.scrollToPosition(eventAdapter.itemCo
+//
+//            Log.d("DEBUG", "Nombre d'événements récupérés : ${eventAdapter.itemCount}")
+//        }
+//    }
 
 }
 

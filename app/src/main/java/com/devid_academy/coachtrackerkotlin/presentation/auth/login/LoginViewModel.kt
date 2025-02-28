@@ -11,8 +11,8 @@ import com.devid_academy.coachtrackerkotlin.data.dto.UserDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.auth.LoginDTO
 import com.devid_academy.coachtrackerkotlin.data.manager.AuthManager
 import com.devid_academy.coachtrackerkotlin.data.manager.PreferencesManager
+import com.devid_academy.coachtrackerkotlin.data.network.ApiService
 import com.devid_academy.coachtrackerkotlin.data.network.ApiService.getApi
-import com.devid_academy.coachtrackerkotlin.data.repository.LoginRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,51 +21,32 @@ import kotlinx.coroutines.withContext
 
 class LoginViewModel() : ViewModel() {
 
-    private val loginRepository = LoginRepository()
+    private val preferencesManager = PreferencesManager
+    private val api = ApiService.getApi()
+//    private val loginRepository = LoginRepository()
 
     private val _loginState = MutableLiveData<LoginState>(LoginState.Idle)
     val loginState: LiveData<LoginState> = _loginState
 
     fun verifyLogin(email: String, password: String) {
         _loginState.value = LoginState.Loading
-
         if (email.isNotEmpty() && password.isNotEmpty()) {
-
             viewModelScope.launch {
-                val result = withContext(Dispatchers.IO) {
-                    loginRepository.login(LoginDTO(email, password))
-                }
-
-                if (result.isSuccess) {
-                    val statusAuth = result.getOrNull()
-                    Log.d("LOGIN_VM", "Réponse de l'API : $statusAuth")
-
-                    val isAuthValid = statusAuth?.token?.let {
-                        Log.d("LOGIN_VM", "Token reçu : $it")
-
-                        AuthManager.isTokenValid(it)
-                    } == true
-                    Log.d("LOGIN_VM", "isAuthValid = $isAuthValid")
-
-                    if(isAuthValid) {
-                        statusAuth?.token?.let {
-                            PreferencesManager.setToken(it)
-                        }
-                        PreferencesManager.saveUser(getApi().getUserProfile())
-
-                        Log.i("PROFILE", "PROFILE : ${PreferencesManager.getUser()}")
-
-                        _loginState.value = LoginState.Success
-                    } else {
-                        Log.e("LOGIN_VM", "Token invalide, état mis à Invalid")
-
-                        _loginState.value = LoginState.Invalid
+                try {
+                    val response = withContext(Dispatchers.IO) {
+                        api.loginUser(LoginDTO(email, password))
                     }
-                } else {
-                    val errorMessage = result.exceptionOrNull()?.message ?: "Erreur inconnue"
-                    _loginState.value = LoginState.Error(errorMessage)
+                    if (response.isSuccessful) {
+                        val result = response.body()
+                        preferencesManager.setToken(result!!.token!!)
+                        _loginState.value = LoginState.Success
+                    } else if(response.code() == 401) {
+                        _loginState.value = LoginState.Invalid
+                        Log.d("RESULT CODE 401", "RESULT CODE 401")
+                    }
+                } catch (e: Exception) {
+                    Log.e("Error LoginVM", "Erreur Login VM : ${e.message}")
                 }
-
             }
         } else {
             _loginState.value = LoginState.Incomplete
@@ -83,6 +64,6 @@ sealed class LoginState {
     data object Loading : LoginState()
     data object Success : LoginState()
     data object Invalid : LoginState()
-    data class Error(val message: String): LoginState()
+    data object Error: LoginState()
 }
 

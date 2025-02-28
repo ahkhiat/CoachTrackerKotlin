@@ -31,7 +31,6 @@ object ApiService {
             client(client)
         }.build()
 
-
     }
     fun getApi() = getClient().create(ApiInterface::class.java)
     fun ViewModel.getApi() = getClient().create(ApiInterface::class.java)

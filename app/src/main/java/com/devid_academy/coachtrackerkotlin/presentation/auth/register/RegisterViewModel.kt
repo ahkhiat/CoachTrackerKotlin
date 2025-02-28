@@ -1,12 +1,15 @@
 package com.devid_academy.coachtrackerkotlin.presentation.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.devid_academy.coachtrackerkotlin.data.dto.auth.LoginDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.auth.RegisterDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.auth.StatusAuthDTO
 import com.devid_academy.coachtrackerkotlin.data.manager.PreferencesManager
+import com.devid_academy.coachtrackerkotlin.data.network.ApiService
 import com.devid_academy.coachtrackerkotlin.data.repository.RegisterRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,35 +19,59 @@ import kotlinx.coroutines.withContext
 
 class RegisterViewModel() : ViewModel() {
 
-    private val registerRepository = RegisterRepository()
-    private val _registerState = MutableStateFlow<RegisterState>(RegisterState.Idle)
-    val registerState: StateFlow<RegisterState> = _registerState
-    private var result : Result<StatusAuthDTO>? = null
+    private val preferencesManager = PreferencesManager
+    private val api = ApiService.getApi()
+//    private val registerRepository = RegisterRepository()
+    private val _registerState = MutableLiveData<RegisterState>(RegisterState.Idle)
+    val registerState: LiveData<RegisterState> = _registerState
 
+//    private var result : Result<StatusAuthDTO>? = null
 
-    fun register(user: RegisterDTO) {
+    fun register(email: String, password: String,
+                 passwordConfirm: String, firstname: String,
+                 lastname: String, birthdate: String) {
         _registerState.value = RegisterState.Loading
+        if(email.isNotEmpty() && password.isNotEmpty()
+            && passwordConfirm.isNotEmpty() && firstname.isNotEmpty()
+            && lastname.isNotEmpty() && birthdate.isNotEmpty()) {
 
-        viewModelScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                registerRepository.register(user)
-            }
-            val statusAuth = result.getOrNull()
-
-            if (result.isSuccess && statusAuth !=null) {
-                Log.i("REGISTER VM", "REGISTER VM, StatusAuth : $statusAuth")
-                PreferencesManager.setToken(statusAuth.token!!)
-                _registerState.value = RegisterState.Success
+            if(password == passwordConfirm) {
+                viewModelScope.launch {
+                    val response = withContext(Dispatchers.IO) {
+                        api.registerUser(RegisterDTO(email, password, firstname,
+                                                        lastname, birthdate))
+                    }
+                    if (response.isSuccessful) {
+                        val result = response.body()
+                        preferencesManager.setToken(result?.token!!)
+                        _registerState.value = RegisterState.Success
+                    } else when (response.code()) {
+                        500 -> {
+                        _registerState.value = RegisterState.Error
+                        Log.d("RESULT CODE 500", "RESULT CODE 500")
+                        }
+                        400 -> {
+                            _registerState.value = RegisterState.Error
+                            Log.d("RESULT CODE 400", "RESULT CODE 400")
+                        }
+                    }
+                }
             } else {
-                _registerState.value = RegisterState.Error(result.exceptionOrNull()?.message!!)
+                _registerState.value = RegisterState.PasswordsDifferent
             }
+        } else {
+            _registerState.value = RegisterState.Incomplete
         }
     }
 }
 
 sealed class RegisterState {
     data object Idle : RegisterState()
+    data object Incomplete : RegisterState()
     data object Loading : RegisterState()
     data object Success : RegisterState()
-    data class Error(val message: String) : RegisterState()
+    data object UsernameAlreadyExists: RegisterState()
+    data object PasswordsDifferent: RegisterState()
+    data object NotCreated : RegisterState()
+    data object Error : RegisterState()
 }

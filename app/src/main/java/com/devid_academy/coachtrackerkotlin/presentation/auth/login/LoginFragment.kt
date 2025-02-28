@@ -53,9 +53,7 @@ class LoginFragment : Fragment() {
             loginBtnLogin.setOnClickListener {
                 emailForm = loginEtEmail.text.toString().trim()
                 passwordForm = loginEtPassword.text.toString().trim()
-
                 viewModel.verifyLogin(emailForm, passwordForm)
-
             }
             loginTvSignup.setOnClickListener{
                 navController().navigate(R.id.action_loginFragment_to_registerFragment)
@@ -64,35 +62,34 @@ class LoginFragment : Fragment() {
     }
 
     private fun observeLoginState() {
-        lifecycleScope.launch {
-            viewModel.loginState.observe(viewLifecycleOwner) {
-                when (it) {
-                    is LoginState.Loading -> {
-                        progressBar.visibility = View.VISIBLE
-                    }
-                    is LoginState.Incomplete -> {
-                        progressBar.visibility = View.GONE
-                        Toast.makeText(context, getString(R.string.fill_all_inputs), Toast.LENGTH_SHORT).show()
-                    }
-                    is LoginState.Success -> {
-                        if(!(PreferencesManager.getToken()).isNullOrEmpty()) {
-                            progressBar.visibility = View.GONE
-                            Toast.makeText(context, getString(R.string.login_successful), Toast.LENGTH_SHORT).show()
-                            navController().navigate(R.id.action_loginFragment_to_rvCalendarFragment)
-                        }
-                    }
-                    is LoginState.Invalid -> {
-                        progressBar.visibility = View.GONE
-                        Toast.makeText(context,getString(R.string.invalid_credentials),Toast.LENGTH_SHORT).show()
-                    }
-                    is LoginState.Error -> {
-                            progressBar.visibility = View.GONE
-                        Toast.makeText(context,getString(R.string.undefinded_error),Toast.LENGTH_SHORT).show()
-                        }
-                    else -> LoginState.Idle
+        viewModel.loginState.observe(viewLifecycleOwner) {
+            when (it) {
+                is LoginState.Loading -> {
+                    progressBar.visibility = View.VISIBLE
                 }
+                is LoginState.Incomplete -> {
+                    progressBar.visibility = View.GONE
+                    Toast.makeText(context, getString(R.string.fill_all_inputs), Toast.LENGTH_SHORT).show()
+                }
+                is LoginState.Success -> {
+                    if(!(PreferencesManager.getToken()).isNullOrEmpty()) {
+                        progressBar.visibility = View.GONE
+                        Toast.makeText(context, getString(R.string.login_successful), Toast.LENGTH_SHORT).show()
+                        navController().navigate(R.id.action_loginFragment_to_rvCalendarFragment)
+                    }
+                }
+                is LoginState.Invalid -> {
+                    progressBar.visibility = View.GONE
+                    Toast.makeText(context,getString(R.string.invalid_credentials),Toast.LENGTH_SHORT).show()
+                }
+                is LoginState.Error -> {
+                        progressBar.visibility = View.GONE
+                    Toast.makeText(context,getString(R.string.undefinded_error),Toast.LENGTH_SHORT).show()
+                    }
+                else -> LoginState.Idle
             }
         }
+
     }
 
 }

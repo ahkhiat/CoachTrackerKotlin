@@ -19,6 +19,7 @@ import com.devid_academy.coachtrackerkotlin.presentation.auth.login.LoginFragmen
 import com.devid_academy.coachtrackerkotlin.presentation.ui.shared.rvcalendar.RvCalendarFragment
 import com.devid_academy.coachtrackerkotlin.presentation.viewmodel.RegisterState
 import com.devid_academy.coachtrackerkotlin.presentation.viewmodel.RegisterViewModel
+import com.devid_academy.coachtrackerkotlin.util.navController
 import kotlinx.coroutines.launch
 
 class RegisterFragment : Fragment() {
@@ -61,19 +62,11 @@ class RegisterFragment : Fragment() {
                 lastnameForm = registerEtLastname.text.toString().trim()
                 birthdateForm = registerEtBirthdate.text.toString().trim()
 
-                if (passwordForm != passwordConfirmForm) {
-                    Toast.makeText(context, getString(R.string.passwords_differents), Toast.LENGTH_SHORT).show()
-                } else if (
-                    loginForm.isNotEmpty() && passwordForm.isNotEmpty() &&
-                    firstnameForm.isNotEmpty() && lastnameForm.isNotEmpty() &&
-                    birthdateForm.isNotEmpty()
-                ) {
-                    viewModel.register(RegisterDTO(loginForm, passwordForm,
-                                                firstnameForm, lastnameForm,
-                                                birthdateForm))
-                } else {
-                    Toast.makeText(context, getString(R.string.fill_all_inputs), Toast.LENGTH_SHORT).show()
-                }
+
+                viewModel.register(loginForm, passwordForm,
+                                    passwordConfirmForm, firstnameForm,
+                                    lastnameForm, birthdateForm)
+
             }
 
             registerEtBirthdate.setOnClickListener {
@@ -100,29 +93,34 @@ class RegisterFragment : Fragment() {
     }
 
     private fun observeRegisterState() {
-        lifecycleScope.launch {
-            viewModel.registerState.collect {
+            viewModel.registerState.observe(viewLifecycleOwner) {
+                progressBar.visibility = if (it is RegisterState.Loading) View.VISIBLE else View.GONE
                 when (it) {
                     is RegisterState.Loading -> {
                         progressBar.visibility = View.VISIBLE
                     }
                     is RegisterState.Success -> {
                         progressBar.visibility = View.GONE
-                        Toast.makeText(context, "Connexion réussie", Toast.LENGTH_SHORT).show()
-
-                        parentFragmentManager.commit {
-                            replace(R.id.fg_container, RvCalendarFragment())
-                        }
+                        Toast.makeText(context, getString(R.string.register_successful), Toast.LENGTH_SHORT).show()
+                        navController().navigate(R.id.action_registerFragment_to_rvCalendarFragment)
                     }
                     is RegisterState.Error -> {
                         progressBar.visibility = View.GONE
-                        Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, getString(R.string.undefinded_error), Toast.LENGTH_SHORT).show()
+                    }
+                    is RegisterState.PasswordsDifferent -> {
+                        progressBar.visibility = View.GONE
+                        Toast.makeText(context, getString(R.string.passwords_differents), Toast.LENGTH_SHORT).show()
+                    }
+                    is RegisterState.Incomplete -> {
+                        progressBar.visibility = View.GONE
+                        Toast.makeText(context, getString(R.string.fill_all_inputs), Toast.LENGTH_SHORT).show()
                     }
                     else -> RegisterState.Idle
 
 
                 }
             }
-        }
+
     }
 }
