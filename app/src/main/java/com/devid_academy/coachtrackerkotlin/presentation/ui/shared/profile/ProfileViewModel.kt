@@ -42,10 +42,11 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val result = withContext(Dispatchers.IO) {
-                    api.getApi().getUserProfile()
-                }
-                _userLiveData.value = result
+//                val result = withContext(Dispatchers.IO) {
+//                    api.getApi().getUserProfile()
+//                }
+                val result = preferencesManager.getUser()
+                _userLiveData.value = result!!
                 _teamNameLiveData.value = result.isCoachOf?.name ?: result.playsIn?.name
                 Log.i("VM PROFILE", "VM COACH OU PLAYSIN : ${result.isCoachOf?.name}")
 

@@ -1,5 +1,6 @@
 package com.devid_academy.coachtrackerkotlin.presentation.ui.shared.rvcalendar
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,11 +18,15 @@ import javax.inject.Inject
 @HiltViewModel
 class RvCalendarViewModel @Inject constructor(
     private val api: ApiService,
+    private val pm: PreferencesManager
 ): ViewModel() {
 
 
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
+
+    private val _sessionState = MutableLiveData<SessionState>(SessionState.Idle)
+    val sessionState: LiveData<SessionState> = _sessionState
 
     private val _categories = MutableLiveData<List<EventTypeDTO>>(emptyList())
     val categories: LiveData<List<EventTypeDTO>> = _categories
@@ -29,12 +34,23 @@ class RvCalendarViewModel @Inject constructor(
     private val _events = MutableLiveData<List<EventDTO>>(emptyList())
     val events: LiveData<List<EventDTO>> = _events
 
+    init {
+        getEvent()
+    }
+
     fun getEvent() {
         viewModelScope.launch {
-//            _sessionState.value = SessionState.Checking
+            _sessionState.value = SessionState.Checking
             _isLoading.value = true
-            val result = withContext(Dispatchers.IO) {
-//                api.getApi().getAllEvents()
+
+            val response = withContext(Dispatchers.IO) {
+                api.getApi().getAllEvents("U11F1")
+            }
+            if(response.isSuccessful) {
+                val result = response.body()
+                Log.i("VM RV", "VM RV result : $result")
+
+
             }
 //            if(result?.status == "unauthorized")
 //                _sessionState.postValue(SessionState.Unauthorized)
@@ -56,4 +72,10 @@ class RvCalendarViewModel @Inject constructor(
             _isLoading.value = false
         }
     }
+}
+sealed class SessionState {
+    data object Idle : SessionState()
+    data object Checking: SessionState()
+    data object Unauthorized : SessionState()
+    data object Authorized: SessionState()
 }

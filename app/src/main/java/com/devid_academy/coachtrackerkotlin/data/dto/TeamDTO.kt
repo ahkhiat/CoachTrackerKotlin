@@ -4,6 +4,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class TeamDTO (
+    val id: Int?,
     val name: String,
     val players: List<PlayerDTO>?,
     val coaches: List<CoachDTO>?

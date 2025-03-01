@@ -48,7 +48,7 @@ class TeamFragment : Fragment() {
                     fgTeamTvTeamName.text = it.name
 
                     if((it.players)!!.isNotEmpty()) {
-                        Log.i("TEAM", "Players : ${it.players}")
+                        Log.i("TEAM PLAYERS FRAG", "Players : ${it.players}")
 
                         for (player in it.players) {
                             val textView = TextView(context).apply {
@@ -66,7 +66,7 @@ class TeamFragment : Fragment() {
                     }
 
                     if((it.coaches)!!.isNotEmpty()) {
-                        Log.i("TEAM", "Players : ${it.coaches}")
+                        Log.i("TEAM COACH FRAG", "Players : ${it.coaches}")
 
                         for (coach in it.coaches) {
                             val textView = TextView(context).apply {

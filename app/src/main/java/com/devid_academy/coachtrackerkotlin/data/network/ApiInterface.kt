@@ -36,13 +36,13 @@ interface ApiInterface {
 
 //    Events
     @GET(ApiRoutes.GET_ALL_EVENTS)
-    fun getAllEvents(@Query("team.name") teamName: String): Call<List<EventDTO>>
+    suspend fun getAllEvents(@Query("team.name") teamName: String): Response<List<EventDTO>>
 
-    @GET(ApiRoutes.GET_EVENT)
-    fun getEvent(@Path("id") eventId: Int): Call<EventDTO>
-
-    @POST(ApiRoutes.ADD_EVENT)
-    fun insertEvent(@Body event: EventDTO): Call<ResponseCreateDTO>
+//    @GET(ApiRoutes.GET_EVENT)
+//    fun getEvent(@Path("id") eventId: Int): Call<EventDTO>
+//
+//    @POST(ApiRoutes.ADD_EVENT)
+//    fun insertEvent(@Body event: EventDTO): Call<ResponseCreateDTO>
 
     @GET(ApiRoutes.GET_EVENT_TYPES)
     suspend fun getEventTypes(): List<EventTypeDTO>

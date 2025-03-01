@@ -36,13 +36,20 @@ class LoginViewModel @Inject constructor(
 
                         if (result?.token != null) {
                             preferencesManager.setToken(result.token)
-
-                            withContext(Dispatchers.IO) {
-                                val userProfile = api.getApi().getUserProfile()
-                                preferencesManager.saveUser(userProfile)
+                            val userProfile = withContext(Dispatchers.IO) {
+                               api.getApi().getUserProfile()
+                            }
+                            Log.i("USER PROFILE", "User profile : ${userProfile}")
+                            preferencesManager.saveUser(userProfile)
+                            Log.i("SAVED USER", "User saved in preferences: ${preferencesManager.getUser()}")
+                            val teamId = userProfile.isCoachOf?.id
+                                ?: userProfile.playsIn?.id
+                                ?: userProfile.isParentOf?.firstOrNull()?.playsIn?.id
+                            Log.i("TEAM ID", "TEAM ID : $teamId")
+                            teamId?.let {
+                                preferencesManager.setTeamId(it)
                             }
                         }
-                        
                         _loginState.value = LoginState.Success
                     } else if(response.code() == 401) {
                         _loginState.value = LoginState.Invalid

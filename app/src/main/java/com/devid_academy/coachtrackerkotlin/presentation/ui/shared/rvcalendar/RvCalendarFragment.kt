@@ -54,6 +54,9 @@ class RvCalendarFragment : Fragment() {
 //                viewModel.getArticles()
 //                swipeRefresh.isRefreshing = false
 //            }
+            viewmodel.events.observe(viewLifecycleOwner) {
+                eventAdapter.submitList(it)
+            }
 
 
             rvBtnCreateEvent.setOnClickListener {

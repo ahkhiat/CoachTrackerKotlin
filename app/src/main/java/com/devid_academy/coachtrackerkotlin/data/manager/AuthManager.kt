@@ -12,8 +12,11 @@ class AuthManager @Inject constructor(
 ) {
 
     fun logout() {
-        preferencesManager.removeToken()
-        preferencesManager.clearUser()
+        with(preferencesManager){
+            removeToken()
+            clearUser()
+            clearAll()
+        }
     }
 
     fun isTokenValid(token: String?): Boolean {

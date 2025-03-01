@@ -23,8 +23,8 @@ class TeamViewModel @Inject constructor(
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _teamLiveData = MutableLiveData<TeamDTO>()
-    val teamLiveData : LiveData<TeamDTO> = _teamLiveData
+    private val _teamLiveData = MutableLiveData<TeamDTO?>()
+    val teamLiveData : LiveData<TeamDTO?> = _teamLiveData
 
     init {
         getTeam()
@@ -32,13 +32,12 @@ class TeamViewModel @Inject constructor(
     fun getTeam() {
         viewModelScope.launch {
             _isLoading.value = true
-            val user = preferencesManager.getUser()
-            val teamId = user?.isCoachOf?.id ?: user?.playsIn?.id
-
-            Log.i("USER", "User : ${user}")
+            _teamLiveData.value = null
+            val teamId = preferencesManager.getTeamId()
+            Log.i("TEAM VM", "Team id recuperé dans le PM : $teamId")
             try {
                 val result = withContext(Dispatchers.IO) {
-                    api.getApi().getTeam(teamId!!)
+                    api.getApi().getTeam(teamId)
                 }
                 Log.i("VM TEAM", "VM TEAM : $result")
                 _teamLiveData.value = result
@@ -47,6 +46,9 @@ class TeamViewModel @Inject constructor(
             }
             _isLoading.value = false
         }
+    }
+    fun onLogout() {
+        _teamLiveData.value = null
     }
 
 

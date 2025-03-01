@@ -7,10 +7,11 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class IsParentOfDTO (
 
-    @Json(name = "user_id")
-    val userId: UserDTO,
+    val id: Int,
+    val firstname: String,
+    val lastname: String,
 
-    @Json(name= "child_id")
-    val childId: UserDTO
+    @Json(name = "plays_in")
+    val playsIn: TeamDTO?
 
 ): Parcelable
