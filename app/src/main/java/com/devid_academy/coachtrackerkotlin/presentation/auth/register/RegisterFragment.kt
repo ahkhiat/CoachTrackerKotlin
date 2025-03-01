@@ -9,26 +9,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.commit
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.devid_academy.coachtrackerkotlin.R
-import com.devid_academy.coachtrackerkotlin.data.dto.auth.RegisterDTO
 import com.devid_academy.coachtrackerkotlin.databinding.FragmentRegisterBinding
-import com.devid_academy.coachtrackerkotlin.presentation.auth.login.LoginFragment
-import com.devid_academy.coachtrackerkotlin.presentation.ui.shared.rvcalendar.RvCalendarFragment
 import com.devid_academy.coachtrackerkotlin.presentation.viewmodel.RegisterState
 import com.devid_academy.coachtrackerkotlin.presentation.viewmodel.RegisterViewModel
 import com.devid_academy.coachtrackerkotlin.util.navController
-import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: RegisterViewModel by activityViewModels()
+    private val viewModel: RegisterViewModel by viewModels()
     private lateinit var progressBar: ProgressBar
-    private lateinit var message: String
 
     private lateinit var loginForm : String
     private lateinit var passwordForm: String
@@ -44,31 +40,14 @@ class RegisterFragment : Fragment() {
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         progressBar = binding.progressBar
+        val navController = findNavController()
 
         observeRegisterState()
 
         with(binding) {
-
-            registerBtnRegister.setOnClickListener {
-
-                loginForm = registerEtEmail.text.toString().trim()
-                passwordForm = registerEtPassword.text.toString().trim()
-                passwordConfirmForm = registerEtPasswordConfirm.text.toString().trim()
-                firstnameForm = registerEtFirstname.text.toString().trim()
-                lastnameForm = registerEtLastname.text.toString().trim()
-                birthdateForm = registerEtBirthdate.text.toString().trim()
-
-
-                viewModel.register(loginForm, passwordForm,
-                                    passwordConfirmForm, firstnameForm,
-                                    lastnameForm, birthdateForm)
-
-            }
-
             registerEtBirthdate.setOnClickListener {
                 val calendar = Calendar.getInstance()
                 val year = calendar.get(Calendar.YEAR)
@@ -82,45 +61,53 @@ class RegisterFragment : Fragment() {
 
                 datePickerDialog.show()
             }
+            registerBtnRegister.setOnClickListener {
+                loginForm = registerEtEmail.text.toString().trim()
+                passwordForm = registerEtPassword.text.toString().trim()
+                passwordConfirmForm = registerEtPasswordConfirm.text.toString().trim()
+                firstnameForm = registerEtFirstname.text.toString().trim()
+                lastnameForm = registerEtLastname.text.toString().trim()
+                birthdateForm = registerEtBirthdate.text.toString().trim()
 
+                viewModel.register(loginForm, passwordForm,
+                                    passwordConfirmForm, firstnameForm,
+                                    lastnameForm, birthdateForm)
+            }
             registerTvSignup.setOnClickListener {
-                parentFragmentManager.commit {
-                    replace(R.id.fg_container, LoginFragment())
-                    addToBackStack(null)
-                }
+                navController.navigate(R.id.action_registerFragment_to_loginFragment)
             }
         }
     }
-
     private fun observeRegisterState() {
-            viewModel.registerState.observe(viewLifecycleOwner) {
-                progressBar.visibility = if (it is RegisterState.Loading) View.VISIBLE else View.GONE
-                when (it) {
-                    is RegisterState.Loading -> {
-                        progressBar.visibility = View.VISIBLE
-                    }
-                    is RegisterState.Success -> {
-                        progressBar.visibility = View.GONE
-                        Toast.makeText(context, getString(R.string.register_successful), Toast.LENGTH_SHORT).show()
-                        navController().navigate(R.id.action_registerFragment_to_rvCalendarFragment)
-                    }
-                    is RegisterState.Error -> {
-                        progressBar.visibility = View.GONE
-                        Toast.makeText(context, getString(R.string.undefinded_error), Toast.LENGTH_SHORT).show()
-                    }
-                    is RegisterState.PasswordsDifferent -> {
-                        progressBar.visibility = View.GONE
-                        Toast.makeText(context, getString(R.string.passwords_differents), Toast.LENGTH_SHORT).show()
-                    }
-                    is RegisterState.Incomplete -> {
-                        progressBar.visibility = View.GONE
-                        Toast.makeText(context, getString(R.string.fill_all_inputs), Toast.LENGTH_SHORT).show()
-                    }
-                    else -> RegisterState.Idle
-
-
+        viewModel.registerState.observe(viewLifecycleOwner) {
+            progressBar.visibility = if (it is RegisterState.Loading) View.VISIBLE else View.GONE
+            when (it) {
+                is RegisterState.Loading -> {
+                    progressBar.visibility = View.VISIBLE
                 }
+                is RegisterState.Success -> {
+                    progressBar.visibility = View.GONE
+                    Toast.makeText(context, getString(R.string.register_successful), Toast.LENGTH_SHORT).show()
+                    navController().navigate(R.id.action_registerFragment_to_rvCalendarFragment)
+                }
+                is RegisterState.Error -> {
+                    progressBar.visibility = View.GONE
+                    Toast.makeText(context, getString(R.string.undefinded_error), Toast.LENGTH_SHORT).show()
+                }
+                is RegisterState.PasswordsDifferent -> {
+                    progressBar.visibility = View.GONE
+                    Toast.makeText(context, getString(R.string.passwords_differents), Toast.LENGTH_SHORT).show()
+                }
+                is RegisterState.Incomplete -> {
+                    progressBar.visibility = View.GONE
+                    Toast.makeText(context, getString(R.string.fill_all_inputs), Toast.LENGTH_SHORT).show()
+                }
+                else -> RegisterState.Idle
             }
-
+        }
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

@@ -12,17 +12,20 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.activityViewModels
 import com.devid_academy.coachtrackerkotlin.R
 import android.graphics.Typeface
+import androidx.fragment.app.viewModels
 import com.devid_academy.coachtrackerkotlin.data.dto.TeamDTO
 import com.devid_academy.coachtrackerkotlin.databinding.FragmentProfileBinding
 import com.devid_academy.coachtrackerkotlin.databinding.FragmentRvCalendarBinding
 import com.devid_academy.coachtrackerkotlin.databinding.FragmentTeamBinding
 import com.devid_academy.coachtrackerkotlin.util.getStatus
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TeamFragment : Fragment() {
 
     private var _binding: FragmentTeamBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: TeamViewModel by activityViewModels()
+    private val viewModel: TeamViewModel by viewModels()
 //    private lateinit var team: TeamDTO
 
     override fun onCreateView(
@@ -97,7 +100,10 @@ class TeamFragment : Fragment() {
     }
 
 
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
 }
 

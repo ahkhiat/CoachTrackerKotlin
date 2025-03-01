@@ -58,23 +58,13 @@ class CreateMatchFragment : Fragment() {
             fillSpinner(spinnerViewModel.stadiumList, createMatchFgSpinnerStadium)
             fillSpinner(spinnerViewModel.seasonList, createMatchFgSpinnerSeason)
 
-
-
-
-
-
-
-
-
         }
-
-
-
-
 
     }
 
-
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
 }

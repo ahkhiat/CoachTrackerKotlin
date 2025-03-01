@@ -28,7 +28,10 @@ class CallUpPlayersFragment : Fragment() {
 
     }
 
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
 
 // Liste de tous les joueurs de l'equipe

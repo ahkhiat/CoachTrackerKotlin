@@ -61,7 +61,7 @@
     <string name="hello_blank_fragment">Change moi ça très vite !</string>
     <string name="profile_tv_team_title">My team</string>
     <string name="profile_tv_phone">phone</string>
-    <string name="profile_tv_phone_title">phone</string>
+    <string name="profile_tv_phone_title">Phone</string>
     <string name="profile_tv_birthdate_title">Birthdate</string>
     <string name="profile_tv_email_title">Email</string>
     <string name="profile_tv_user_informations_title">User informations</string>
@@ -77,5 +77,6 @@
     <string name="undefinded_error">Undefined error</string>
     <string name="not_provided">not provided</string>
     <string name="register_successful">Register successful</string>
+    <string name="logout">Disconnected</string>
 
 </resources>

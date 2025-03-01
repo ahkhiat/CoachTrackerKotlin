@@ -19,6 +19,7 @@
     <string name="inputs_ok">Valid input</string>
     <string name="undefinded_error">Undefined error</string>
     <string name="register_successful">Register successful</string>
+    <string name="logout">Disconnected</string>
 
 
 </resources>

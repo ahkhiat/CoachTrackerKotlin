@@ -4,24 +4,17 @@ import android.util.Log
 import com.auth0.android.jwt.JWT
 
 import java.util.Date
+import javax.inject.Inject
 
 
-object AuthManager {
+class AuthManager @Inject constructor(
+    private val preferencesManager: PreferencesManager
+) {
 
     fun logout() {
-        PreferencesManager.removeToken()
+        preferencesManager.removeToken()
+        preferencesManager.clearUser()
     }
-
-//    fun isTokenValid(token: String?): Boolean {
-//        if (token.isNullOrEmpty()) return false
-//
-//        return try {
-//            val jwt = JWT(token)
-//            !jwt.isExpired(0)
-//        } catch (e: Exception) {
-//            false
-//        }
-//    }
 
     fun isTokenValid(token: String?): Boolean {
         if (token.isNullOrEmpty()) return false

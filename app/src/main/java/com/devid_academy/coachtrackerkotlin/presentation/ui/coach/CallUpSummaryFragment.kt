@@ -28,7 +28,10 @@ class CallUpSummaryFragment : Fragment() {
 
     }
 
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
 
 // Recapitulatif de la creation du match

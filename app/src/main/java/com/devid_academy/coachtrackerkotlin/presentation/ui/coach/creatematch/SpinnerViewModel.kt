@@ -9,14 +9,18 @@ import com.devid_academy.coachtrackerkotlin.data.dto.EventTypeDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.SeasonDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.StadiumDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.VisitorTeamDTO
-import com.devid_academy.coachtrackerkotlin.data.repository.SpinnerRepository
+import com.devid_academy.coachtrackerkotlin.data.network.ApiService
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class SpinnerViewModel: ViewModel() {
+@HiltViewModel
+class SpinnerViewModel  @Inject constructor(
+    private val api: ApiService
+): ViewModel() {
 
-    private val repository = SpinnerRepository()
 
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
@@ -40,7 +44,7 @@ class SpinnerViewModel: ViewModel() {
         viewModelScope.launch {
             _isLoading.value = true
             val visitorTeamList = withContext(Dispatchers.IO) {
-                repository.getVisitorTeamList()
+                api.getApi().getVisitorTeamList()
             }
             _visitorTeamList.value = visitorTeamList
             Log.i("VIEW MODEL SPINNER", "LISTE DES VISITOR TEAM: ${_visitorTeamList .value}")
@@ -52,7 +56,7 @@ class SpinnerViewModel: ViewModel() {
         viewModelScope.launch {
             _isLoading.value = true
             val stadiumList = withContext(Dispatchers.IO) {
-                repository.getStadiumList()
+                api.getApi().getStadiumList()
             }
             _stadiumList.value = stadiumList
             Log.i("VIEW MODEL SPINNER", "LISTE DES STADIUM: ${_stadiumList .value}")
@@ -64,7 +68,7 @@ class SpinnerViewModel: ViewModel() {
         viewModelScope.launch {
             _isLoading.value = true
             val seasonList = withContext(Dispatchers.IO) {
-                repository.getSeasonList()
+                api.getApi().getSeasonList()
             }
             _seasonList.value = seasonList
             Log.i("VIEW MODEL SPINNER", "LISTE DES SEASON: ${_seasonList .value}")

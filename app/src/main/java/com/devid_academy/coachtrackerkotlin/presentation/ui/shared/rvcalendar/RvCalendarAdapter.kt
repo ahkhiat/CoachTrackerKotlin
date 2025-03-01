@@ -44,12 +44,10 @@ class RvCalendarAdapter(
             itemTvMonth.text = SimpleDateFormat("MMM", Locale.getDefault()).format(date)
             itemTvTime.text = SimpleDateFormat("HH:mm", Locale.getDefault()).format(date)
 
-            root.setOnClickListener { onItemClick(event) }
+//            root.setOnClickListener { onItemClick(event) }
         }
     }
-
     class EventHolder(val binding: ItemRvEventBinding) : RecyclerView.ViewHolder(binding.root)
-
 }
 object ContactDiffCallback : DiffUtil.ItemCallback<EventDTO>() {
     override fun areItemsTheSame(oldItem: EventDTO, newItem: EventDTO): Boolean {

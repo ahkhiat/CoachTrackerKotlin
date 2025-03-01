@@ -10,18 +10,20 @@ import com.devid_academy.coachtrackerkotlin.data.dto.auth.RegisterDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.auth.StatusAuthDTO
 import com.devid_academy.coachtrackerkotlin.data.manager.PreferencesManager
 import com.devid_academy.coachtrackerkotlin.data.network.ApiService
-import com.devid_academy.coachtrackerkotlin.data.repository.RegisterRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class RegisterViewModel() : ViewModel() {
+@HiltViewModel
+class RegisterViewModel @Inject constructor(
+    private val preferencesManager: PreferencesManager ,
+    private val api: ApiService
+) : ViewModel() {
 
-    private val preferencesManager = PreferencesManager
-    private val api = ApiService.getApi()
-//    private val registerRepository = RegisterRepository()
     private val _registerState = MutableLiveData<RegisterState>(RegisterState.Idle)
     val registerState: LiveData<RegisterState> = _registerState
 
@@ -38,7 +40,7 @@ class RegisterViewModel() : ViewModel() {
             if(password == passwordConfirm) {
                 viewModelScope.launch {
                     val response = withContext(Dispatchers.IO) {
-                        api.registerUser(RegisterDTO(email, password, firstname,
+                        api.getApi().registerUser(RegisterDTO(email, password, firstname,
                                                         lastname, birthdate))
                     }
                     if (response.isSuccessful) {

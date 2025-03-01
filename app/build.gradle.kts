@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+
     id("kotlin-parcelize")
     id("androidx.navigation.safeargs.kotlin")
 
@@ -75,11 +76,11 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.5")
     implementation("androidx.navigation:navigation-ui-ktx:2.8.5")
 
-    val hiltVersion = "2.44.2"
+    val hiltVersion = "2.55"
 
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
-
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.22")
 }

@@ -17,5 +17,12 @@ class PlayerProfileFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_player_profile, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+//        _binding = null
+    }
 
 }

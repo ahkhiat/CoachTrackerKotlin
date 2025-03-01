@@ -7,60 +7,52 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.devid_academy.coachtrackerkotlin.R
 import com.devid_academy.coachtrackerkotlin.data.manager.AuthManager
 import com.devid_academy.coachtrackerkotlin.data.manager.PreferencesManager
 import com.devid_academy.coachtrackerkotlin.databinding.FragmentProfileBinding
-import com.devid_academy.coachtrackerkotlin.presentation.ui.shared.rvteam.TeamViewModel
+import com.devid_academy.coachtrackerkotlin.util.makeToast
 import com.devid_academy.coachtrackerkotlin.util.navController
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class ProfileFragment : Fragment() {
 
+    @Inject
+    lateinit var authManager: AuthManager
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: ProfileViewModel by activityViewModels()
+    private val viewModel: ProfileViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-//        val user = PreferencesManager.getUser()
-
-        with(binding) {
-
-            viewModel.userLiveData.observe(requireActivity()) {
-
-                profileTvFullName.text = it.firstname + " " + it.lastname
-                profileTvEmail.text = it.email
-                profileTvBirthdate.text = it.birthdate
-                profileTvPhone.text = it.phone ?: getText(R.string.not_provided)
-
-
-
-            }
-
-
-        }
+        val navController = findNavController()
 
         binding.btnLogout.setOnClickListener {
-            Toast.makeText(requireContext(), "Déconnexion...", Toast.LENGTH_SHORT).show()
-            Log.d("TOKEN", "TOKEN AVANT LOGOUT : ${PreferencesManager.getToken()}")
-            AuthManager.logout()
-            Log.d("TOKEN", "TOKEN APRES LOGOUT : ${PreferencesManager.getToken()}")
 
-            navController().navigate(R.id.action_profileFragment_to_splashFragment)
+            authManager.logout()
+            makeToast(requireContext(), getString(R.string.logout))
+            navController.navigate(R.id.action_profileFragment_to_splashFragment)
         }
 
 
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }

@@ -1,29 +1,24 @@
 package com.devid_academy.coachtrackerkotlin.presentation.viewmodel
 
-import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.devid_academy.coachtrackerkotlin.R
-import com.devid_academy.coachtrackerkotlin.data.dto.UserDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.auth.LoginDTO
-import com.devid_academy.coachtrackerkotlin.data.manager.AuthManager
 import com.devid_academy.coachtrackerkotlin.data.manager.PreferencesManager
 import com.devid_academy.coachtrackerkotlin.data.network.ApiService
-import com.devid_academy.coachtrackerkotlin.data.network.ApiService.getApi
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class LoginViewModel() : ViewModel() {
-
-    private val preferencesManager = PreferencesManager
-    private val api = ApiService.getApi()
-//    private val loginRepository = LoginRepository()
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    private val preferencesManager: PreferencesManager,
+    private val api: ApiService
+): ViewModel() {
 
     private val _loginState = MutableLiveData<LoginState>(LoginState.Idle)
     val loginState: LiveData<LoginState> = _loginState
@@ -34,11 +29,20 @@ class LoginViewModel() : ViewModel() {
             viewModelScope.launch {
                 try {
                     val response = withContext(Dispatchers.IO) {
-                        api.loginUser(LoginDTO(email, password))
+                        api.getApi().loginUser(LoginDTO(email, password))
                     }
                     if (response.isSuccessful) {
                         val result = response.body()
-                        preferencesManager.setToken(result!!.token!!)
+
+                        if (result?.token != null) {
+                            preferencesManager.setToken(result.token)
+
+                            withContext(Dispatchers.IO) {
+                                val userProfile = api.getApi().getUserProfile()
+                                preferencesManager.saveUser(userProfile)
+                            }
+                        }
+                        
                         _loginState.value = LoginState.Success
                     } else if(response.code() == 401) {
                         _loginState.value = LoginState.Invalid

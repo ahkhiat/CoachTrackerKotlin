@@ -3,6 +3,7 @@ package com.devid_academy.coachtrackerkotlin.util
 import android.content.Context
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -32,4 +33,8 @@ fun <T> Fragment.fillSpinner(liveData: LiveData<List<T>>, spinner: Spinner){
             spinner.adapter = adapter
         }
     }
+}
+
+fun makeToast(context: Context ,message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }

@@ -14,47 +14,27 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import android.content.Context
 import android.util.Log
+import androidx.fragment.app.viewModels
 import com.devid_academy.coachtrackerkotlin.util.TOKEN
 import com.devid_academy.coachtrackerkotlin.util.navController
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class SplashFragment : Fragment() {
+    private val viewModel: SplashViewModel by viewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_splash, container, false)
     }
-
-    fun hideLoading() {
-        view?.findViewById<ProgressBar>(R.id.progressBar)?.visibility = View.GONE
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val navController = findNavController()
 
-
-        lifecycleScope.launch {
-            delay(3000)
-
-            val tokenFromSp = requireContext().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
-            .getString(TOKEN, null)
-            Log.d("TOKEN", "TOKEN DANS SPLASH : $tokenFromSp")
-
-            if(tokenFromSp.isNullOrEmpty()) {
-                Log.d("NAVIGATION", "Redirection vers LoginFragment")
-
-                navController().navigate(R.id.action_splashFragment_to_loginFragment)
-            } else {
-                Log.d("NAVIGATION", "Redirection vers RvCalendarFragment")
-
-                navController().navigate(R.id.action_splashFragment_to_rvCalendarFragment)
-            }
-
+        viewModel.direction.observe(viewLifecycleOwner) {
+            navController.navigate(it!!)
         }
-
-
-
     }
-
 }

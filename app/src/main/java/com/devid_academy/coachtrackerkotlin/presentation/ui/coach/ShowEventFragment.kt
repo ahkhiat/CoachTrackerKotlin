@@ -15,7 +15,6 @@ import android.widget.TextView
 import com.devid_academy.coachtrackerkotlin.R
 import com.devid_academy.coachtrackerkotlin.data.dto.EventDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.PlayerDTO
-import com.devid_academy.coachtrackerkotlin.data.repository.EventRepository
 import com.devid_academy.coachtrackerkotlin.databinding.FragmentShowEventBinding
 import com.devid_academy.coachtrackerkotlin.databinding.FragmentTeamBinding
 import com.devid_academy.coachtrackerkotlin.util.EVENT_KEY
@@ -103,6 +102,9 @@ class ShowEventFragment : Fragment() {
 
 
 
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
 }

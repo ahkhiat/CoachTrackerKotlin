@@ -1,7 +1,10 @@
 package com.devid_academy.coachtrackerkotlin.data.dto
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class UserProfileDTO (
 
     val id: Int,
@@ -13,12 +16,12 @@ data class UserProfileDTO (
     val roles: List<String>?,
 
     @Json(name= "plays_in")
-    val playsIn: TeamDTO?,
+    val playsIn: UserTeamDTO?,
 
     @Json(name= "is_coach_of")
-    val isCoachOf: TeamDTO?,
+    val isCoachOf: UserTeamDTO?,
 
     @Json(name= "is_parent_of")
     val isParentOf: List<IsParentOfDTO>?,
 
-    )
+    ): Parcelable
