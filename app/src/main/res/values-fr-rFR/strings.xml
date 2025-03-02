@@ -20,6 +20,9 @@
     <string name="undefinded_error">Undefined error</string>
     <string name="register_successful">Register successful</string>
     <string name="logout">Disconnected</string>
+    <string name="radio1">Entrainement</string>
+    <string name="radio2">Match</string>
+    <string name="create_event_btn">Create</string>
 
 
 </resources>

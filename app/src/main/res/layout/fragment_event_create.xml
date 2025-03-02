@@ -2,33 +2,103 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout3"
+    android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.ui.coach.createevent.CreateEventFragment">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/create_match_fg_tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/tv_fg_event_create_title"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="20dp"
+        android:text="@string/create_match_fg_tv_title"
+        android:layout_marginTop="30dp"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/fg_create_event_buttonContainer"
 
-        android:layout_width="409dp"
-        android:layout_height="581dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/group_radio"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="@id/create_match_fg_tv_date"
+        app:layout_constraintTop_toBottomOf="@+id/create_match_fg_tv_title">
+
+        <RadioButton
+            android:id="@+id/create_radio_btn1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/radio1"
+            android:checked="true"
+            />
+
+        <RadioButton
+            android:id="@+id/create_radio_btn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/radio2"
+            />
+
+
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/create_match_fg_tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:hint="Date de l'événement"
+        android:inputType="date"
+        app:layout_constraintStart_toStartOf="@+id/create_match_fg_spinner_visitor_team"
+        app:layout_constraintTop_toBottomOf="@+id/group_radio" />
+
+
+    <Spinner
+        android:id="@+id/create_match_fg_spinner_visitor_team"
+        android:visibility="invisible"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:autofillHints="Visitor team"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2">
+        app:layout_constraintTop_toBottomOf="@+id/create_match_fg_tv_date" />
 
-    </LinearLayout>
+    <Spinner
+        android:id="@+id/create_match_fg_spinner_stadium"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:autofillHints="Location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_match_fg_spinner_visitor_team" />
 
+    <Spinner
+        android:id="@+id/create_match_fg_spinner_season"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:autofillHints="Season"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_match_fg_spinner_stadium" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create_event_btn"
+        android:textSize="20sp"
+        android:background="@drawable/btn_large"
+        android:layout_marginTop="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_match_fg_spinner_season" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

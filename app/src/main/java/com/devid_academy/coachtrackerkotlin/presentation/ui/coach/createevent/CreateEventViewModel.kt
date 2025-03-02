@@ -1,14 +1,14 @@
-package com.devid_academy.coachtrackerkotlin.presentation.ui.coach.creatematch
+package com.devid_academy.coachtrackerkotlin.presentation.ui.coach.createevent
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.devid_academy.coachtrackerkotlin.data.dto.EventTypeDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.SeasonDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.StadiumDTO
 import com.devid_academy.coachtrackerkotlin.data.dto.VisitorTeamDTO
+import com.devid_academy.coachtrackerkotlin.data.manager.PreferencesManager
 import com.devid_academy.coachtrackerkotlin.data.network.ApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -17,8 +17,9 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class SpinnerViewModel  @Inject constructor(
-    private val api: ApiService
+class CreateEventViewModel  @Inject constructor(
+    private val api: ApiService,
+    private val pm: PreferencesManager
 ): ViewModel() {
 
 
@@ -38,6 +39,17 @@ class SpinnerViewModel  @Inject constructor(
         getVisitorTeamList()
         getStadiumList()
         getSeasonList()
+    }
+
+    fun createEvent(
+        eventType: Int,
+        date: String,
+        stadium: Int,
+        season: Int,
+        visitorTeam: Int
+    ) {
+        //team ID
+        if(eventType.isNot)
     }
 
     fun getVisitorTeamList() {

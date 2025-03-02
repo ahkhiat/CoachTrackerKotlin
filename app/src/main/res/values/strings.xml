@@ -38,7 +38,7 @@
     <string name="tv_fg_event_create_title">Create Event</string>
 
     <!--  Create Match Fragment  -->
-    <string name="create_match_fg_tv_title">Create Match</string>
+    <string name="create_match_fg_tv_title">Create Event</string>
 
     <!--  RecyclerView Calendar  -->
     <string name="rv_calendar_tv_title">Calendar</string>
@@ -78,5 +78,8 @@
     <string name="not_provided">not provided</string>
     <string name="register_successful">Register successful</string>
     <string name="logout">Disconnected</string>
+    <string name="radio1">Training</string>
+    <string name="radio2">Match</string>
+    <string name="create_event_btn">Create</string>
 
 </resources>

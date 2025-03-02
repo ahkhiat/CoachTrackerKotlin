@@ -1,26 +1,27 @@
 package com.devid_academy.coachtrackerkotlin.presentation.ui.coach.createevent
 
+import android.app.DatePickerDialog
+import android.icu.util.Calendar
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
+import android.widget.Spinner
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import com.devid_academy.coachtrackerkotlin.R
 import com.devid_academy.coachtrackerkotlin.databinding.FragmentEventCreateBinding
-import com.devid_academy.coachtrackerkotlin.presentation.ui.shared.rvcalendar.RvCalendarViewModel
-
+import com.devid_academy.coachtrackerkotlin.util.fillSpinner
 
 class CreateEventFragment : Fragment() {
 
     private var _binding: FragmentEventCreateBinding? = null
     private val binding get() = _binding!!
+    private val createEventViewModel: CreateEventViewModel by activityViewModels()
 
-    private val viewModel: RvCalendarViewModel by activityViewModels()
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,43 +33,45 @@ class CreateEventFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val navController = findNavController()
-        var buttonContainer = view.findViewById<LinearLayout>(R.id.fg_create_event_buttonContainer)
 
-        viewModel.getEventTypes()
-
-        viewModel.categories.observe(requireActivity()) {
-            buttonContainer.removeAllViews()
-
-            it.forEach {
-                Log.d("EventCreateFragment", "Categories reçues: $it")
-                val categoryButton = Button(requireContext()).apply {
-                    text = it.name
-                    setOnClickListener {
-//                            parentFragmentManager.commit {
-//                                replace(R.id.fg_container, CreateMatchFragment())
-//                                addToBackStack(null)
-//                            }
-                        navController.navigate(R.id.action_createEventFragment_to_createMatchFragment)
+        with(binding) {
+            groupRadio.setOnCheckedChangeListener { _, checkedId ->
+                when (checkedId) {
+                    R.id.create_radio_btn1 -> {
+                        createMatchFgSpinnerVisitorTeam.visibility = View.INVISIBLE
+                    }
+                    R.id.create_radio_btn2 -> {
+                        createMatchFgSpinnerVisitorTeam.visibility = View.VISIBLE
                     }
                 }
-                buttonContainer.addView(categoryButton)
+
             }
+
+            createMatchFgTvDate.setOnClickListener {
+                val calendar = Calendar.getInstance()
+                val year = calendar.get(Calendar.YEAR)
+                val month = calendar.get(Calendar.MONTH)
+                val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+                val datePickerDialog = DatePickerDialog(requireContext(), { _, selectedYear, selectedMonth, selectedDay ->
+                    val formattedDate = String.format("%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay)
+                    createMatchFgTvDate.setText(formattedDate)
+                }, year, month, day)
+
+                datePickerDialog.show()
+            }
+
+            fillSpinner(createEventViewModel.visitorTeamList, createMatchFgSpinnerVisitorTeam)
+            fillSpinner(createEventViewModel.stadiumList, createMatchFgSpinnerStadium)
+            fillSpinner(createEventViewModel.seasonList, createMatchFgSpinnerSeason)
+
         }
 
-
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
 }
-
-//Données attendues :
-
-//        fetch de la table event type pour afficher autant de boutons que de catégories
-// reflechir pour ajouter un champ "isVisible" pour que seuls les catés choisies comme
-// visibles s'affichent
-
-// Les boutons dirigent vers les frag AddMatch, AddTraining, AddCamp

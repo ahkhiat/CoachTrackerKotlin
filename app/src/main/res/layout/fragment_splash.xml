@@ -10,13 +10,14 @@
 
     <ImageView
         android:id="@+id/iv_splash_act"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="243dp"
+        android:layout_height="255dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ct_logo" />
+        app:srcCompat="@drawable/soccer_ball" />
+        />
 
     <ProgressBar
         android:id="@+id/progressBar"

@@ -42,13 +42,18 @@ class RvCalendarViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading.value = true
             try {
+                val user = pm.getUser()
+                val teamName = user?.isCoachOf?.name
+                    ?: user?.playsIn?.name
+                    ?: user?.isParentOf?.firstOrNull()?.playsIn?.name
+                Log.i("VM RV", "Team Name : $teamName")
                 val response = withContext(Dispatchers.IO) {
-                    api.getApi().getAllEvents("U11F1")
+                    api.getApi().getAllEvents(teamName!!)
                 }
                 if(response.isSuccessful) {
                     val result = response.body()
                     Log.i("VM RV", "VM RV result : $result")
-                    _events.value = result
+                    _events.value = result!!
                 } else {
                     Log.e("VM RV", "Else de isSuccesful : ${response.errorBody()?.string()}")
                 }

@@ -41,8 +41,8 @@ interface ApiInterface {
 //    @GET(ApiRoutes.GET_EVENT)
 //    fun getEvent(@Path("id") eventId: Int): Call<EventDTO>
 //
-//    @POST(ApiRoutes.ADD_EVENT)
-//    fun insertEvent(@Body event: EventDTO): Call<ResponseCreateDTO>
+    @POST(ApiRoutes.ADD_EVENT)
+    suspend fun insertEvent(@Body event: EventDTO): Response<ResponseCreateDTO>
 
     @GET(ApiRoutes.GET_EVENT_TYPES)
     suspend fun getEventTypes(): List<EventTypeDTO>

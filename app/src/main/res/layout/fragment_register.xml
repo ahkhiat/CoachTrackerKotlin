@@ -101,6 +101,8 @@
         android:id="@+id/register_btn_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/btn_auth"
+        android:textSize="20sp"
         android:text="@string/register_btn_register"
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
