@@ -40,25 +40,22 @@ class RvCalendarViewModel @Inject constructor(
 
     fun getEvent() {
         viewModelScope.launch {
-            _sessionState.value = SessionState.Checking
             _isLoading.value = true
-
-            val response = withContext(Dispatchers.IO) {
-                api.getApi().getAllEvents("U11F1")
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    api.getApi().getAllEvents("U11F1")
+                }
+                if(response.isSuccessful) {
+                    val result = response.body()
+                    Log.i("VM RV", "VM RV result : $result")
+                    _events.value = result
+                } else {
+                    Log.e("VM RV", "Else de isSuccesful : ${response.errorBody()?.string()}")
+                }
+            } catch(e: Exception) {
+                Log.e("VM RV", "Erreur Catch: ${e.message}")
             }
-            if(response.isSuccessful) {
-                val result = response.body()
-                Log.i("VM RV", "VM RV result : $result")
-
-
-            }
-//            if(result?.status == "unauthorized")
-//                _sessionState.postValue(SessionState.Unauthorized)
-//            else {
-//                _sessionState.postValue(SessionState.Authorized)
-//                _articles.postValue(result?.articles)
-//            }
-            _isLoading.postValue(false)
+            _isLoading.value = false
         }
     }
 
